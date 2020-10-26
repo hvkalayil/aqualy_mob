@@ -4,11 +4,15 @@ class SplashScreen extends StatelessWidget {
   static String id = 'SplashScreen Id';
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: Text(
-          'Lorem Ipsum',
-          style: TextStyle(fontSize: 24),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: SafeArea(
+          child: Center(
+            child: Column(children: [
+              Image.asset('assets/splash.png'),
+            ]),
+          ),
         ),
       ),
     );
