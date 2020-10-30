@@ -1,3 +1,4 @@
+import 'package:aqua_ly/Screens/fish_info.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
@@ -18,11 +19,11 @@ class LoginPage extends StatelessWidget {
                 'assets/graphics/logo-1.png',
                 height: 150,
               ),
-              Text(
+              const Text(
                 "Welcome Back",
                 style: TextStyle(color: Colors.blue, fontSize: 20),
               ),
-              Text(
+              const Text(
                 "Login to Continue",
                 style: TextStyle(color: Colors.grey),
               )
@@ -43,7 +44,7 @@ class LoginPage extends StatelessWidget {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         labelText: "Email",
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.email,
                           color: Colors.red,
                         )),
@@ -57,7 +58,7 @@ class LoginPage extends StatelessWidget {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         labelText: "Password",
-                        prefixIcon: Icon(
+                        prefixIcon: const Icon(
                           Icons.lock,
                           color: Colors.black,
                         )),
@@ -65,7 +66,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 FlatButton(
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     "Forgot Password?",
                     textAlign: TextAlign.right,
                     style: TextStyle(color: Colors.blue),
@@ -75,15 +76,15 @@ class LoginPage extends StatelessWidget {
                   width: 300,
                   padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: RaisedButton(
-                    onPressed: () {},
+                    onPressed: () => onLoginClick(context),
                     color: Colors.blue,
-                    child: Text(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    child: const Text(
                       "LOGIN",
                       style: TextStyle(
                           color: Colors.white, fontWeight: FontWeight.bold),
                     ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
                   ),
                 )
               ],
@@ -91,9 +92,9 @@ class LoginPage extends StatelessWidget {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                 child: Text(
                   "Don't have an account?",
                   style: TextStyle(fontSize: 10),
@@ -111,5 +112,9 @@ class LoginPage extends StatelessWidget {
         ],
       )),
     );
+  }
+
+  void onLoginClick(BuildContext context) {
+    Navigator.pushNamedAndRemoveUntil(context, FishInfo.id, (route) => false);
   }
 }

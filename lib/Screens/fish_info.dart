@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class fish_info extends StatelessWidget {
+class FishInfo extends StatelessWidget {
   static String id = 'fishinfo';
-  const fish_info({Key key}) : super(key: key);
+  const FishInfo({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +10,7 @@ class fish_info extends StatelessWidget {
       appBar: AppBar(
         actions: [
           IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.shopping_cart,
                 color: Colors.blue,
               ),
@@ -26,12 +26,12 @@ class fish_info extends StatelessWidget {
         children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: [Text("Name"), Text("price")],
+            children: const [Text("Name"), Text("price")],
           ),
           Row(
             children: [
               Column(
-                children: [
+                children: const [
                   Text(
                     "Specifications",
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -41,7 +41,7 @@ class fish_info extends StatelessWidget {
                   Text("gender")
                 ],
               ),
-              Image(
+              const Image(
                 image: AssetImage("assets/graphics/gold.png"),
                 width: 200,
                 height: 200,
@@ -49,7 +49,7 @@ class fish_info extends StatelessWidget {
               )
             ],
           ),
-          Column(children: [
+          Column(children: const [
             Text("features"),
             Text("feature1"),
             Text("feature2"),
@@ -57,12 +57,12 @@ class fish_info extends StatelessWidget {
           ]),
           RaisedButton(
             onPressed: () {},
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20))),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Text("buy now"), Icon(Icons.forward)],
+              children: const [Text("buy now"), Icon(Icons.forward)],
             ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20))),
           )
         ],
       )),
