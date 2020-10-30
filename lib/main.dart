@@ -1,3 +1,4 @@
+import 'package:aqua_ly/Screens/fish_info.dart';
 import 'package:aqua_ly/routes.dart';
 import 'package:aqua_ly/theme.dart';
 import 'package:flutter/material.dart';
