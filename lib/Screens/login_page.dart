@@ -1,10 +1,11 @@
 import 'package:aqua_ly/Screens/fish_info.dart';
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
 
 class LoginPage extends StatelessWidget {
   static String id = 'login';
-  const LoginPage({Key key}) : super(key: key);
-
+  LoginPage({Key key}) : super(key: key);
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,62 +34,79 @@ class LoginPage extends StatelessWidget {
             margin: const EdgeInsets.all(0),
             padding: const EdgeInsets.all(10),
             child: Form(
+                key: _formKey,
                 child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  margin: const EdgeInsets.all(5),
-                  height: 50,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        labelText: "Email",
-                        prefixIcon: const Icon(
-                          Icons.email,
-                          color: Colors.red,
-                        )),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.all(5),
-                  height: 50,
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        labelText: "Password",
-                        prefixIcon: const Icon(
-                          Icons.lock,
-                          color: Colors.black,
-                        )),
-                  ),
-                ),
-                FlatButton(
-                  onPressed: () {},
-                  child: const Text(
-                    "Forgot Password?",
-                    textAlign: TextAlign.right,
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                ),
-                Container(
-                  width: 300,
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: RaisedButton(
-                    onPressed: () => onLoginClick(context),
-                    color: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    child: const Text(
-                      "LOGIN",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.all(5),
+                      height: 50,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value.isEmpty ||
+                              !EmailValidator.validate(value)) {
+                            return 'please enter valid email';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            labelText: "Email",
+                            prefixIcon: const Icon(
+                              Icons.email,
+                              color: Colors.red,
+                            )),
+                      ),
                     ),
-                  ),
-                )
-              ],
-            )),
+                    Container(
+                      margin: const EdgeInsets.all(5),
+                      height: 50,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'please enter password';
+                          }
+
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            labelText: "Password",
+                            prefixIcon: const Icon(
+                              Icons.lock,
+                              color: Colors.black,
+                            )),
+                      ),
+                    ),
+                    FlatButton(
+                      onPressed: () {},
+                      child: const Text(
+                        "Forgot Password?",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                    ),
+                    Container(
+                      width: 300,
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: RaisedButton(
+                        onPressed: () {
+                          if (_formKey.currentState.validate()) {}
+                        },
+                        color: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: const Text(
+                          "LOGIN",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    )
+                  ],
+                )),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
