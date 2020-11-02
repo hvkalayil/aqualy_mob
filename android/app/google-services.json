@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "47796448259",
+    "firebase_url": "https://aqualy-8ed82.firebaseio.com",
+    "project_id": "aqualy-8ed82",
+    "storage_bucket": "aqualy-8ed82.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47796448259:android:d7d568d575d4809b373236",
+        "android_client_info": {
+          "package_name": "com.aqua.aqua_ly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "47796448259-8e75h5t20t21nubirvrj0thsj1rnn2sb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aqua.aqua_ly",
+            "certificate_hash": "e9d1e4b2b517a6e2c75ec62caeff23fdfb4c0fc0"
+          }
+        },
+        {
+          "client_id": "47796448259-bf3dii9voj5i3hcfuf2lq5oepsjiq9tk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSoISM0TTDVf8P_elgIkPQ2cfcP8N7f1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "47796448259-bf3dii9voj5i3hcfuf2lq5oepsjiq9tk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
