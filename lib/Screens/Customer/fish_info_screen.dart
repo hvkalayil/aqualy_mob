@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class FishInfo extends StatelessWidget {
+class FishInfoScreen extends StatelessWidget {
   static String id = 'fishinfo';
-  const FishInfo({Key key}) : super(key: key);
+  const FishInfoScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,6 @@ class FishInfo extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: const [Text("Name"), Text("price")],
           ),
           Row(
