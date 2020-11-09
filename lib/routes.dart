@@ -17,7 +17,6 @@ final Map<String, Widget Function(BuildContext)> routes = {
   RegisterScreen.id: (_) => RegisterScreen(),
 
   //Customer Routes
-
   CustomerProfileSetupScreen.id: (_) => CustomerProfileSetupScreen(),
   MainScreen.id: (_) => MainScreen(),
 

@@ -53,21 +53,27 @@ class _CustomerProfileSetupScreenState
               children: [
                 //Profile Image
                 CircleAvatar(
-                    backgroundColor: kPrimaryColor,
-                    radius: 80,
-                    child: Container(
-                      height: 140,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: _imageFile == null
-                                ? const AssetImage(
-                                    'assets/graphics/male.png',
-                                  )
-                                : FileImage(File(_imageFile.path)),
-                            fit: BoxFit.cover,
-                          )),
-                    )),
+                  backgroundColor: kPrimaryColor,
+                  radius: 80,
+                  child: Container(
+                    height: 140,
+                    decoration: _imageFile == null
+                        ? const BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: AssetImage('assets/graphics/male.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: FileImage(File(_imageFile.path)),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                  ),
+                ),
 
                 //Edit Button
                 Positioned(

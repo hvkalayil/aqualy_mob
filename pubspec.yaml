@@ -11,12 +11,12 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  image_picker: ^0.6.7+12
 
   flutter:
     sdk: flutter
 
   cupertino_icons: ^1.0.0
+
 #  Validating Email in Auth
   email_validator: '^1.0.0'
 
@@ -28,6 +28,12 @@ dependencies:
 
 #  Local Persistence
   shared_preferences: ^0.5.12+2
+
+#  Image Picker
+  image_picker: ^0.6.7+12
+
+# Bottom Nav Bar
+  fluid_bottom_nav_bar: ^1.2.0
 
 dev_dependencies:
   lint: ^1.0.0
