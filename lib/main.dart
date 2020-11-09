@@ -1,3 +1,4 @@
+import 'package:aqua_ly/Screens/Customer/main_screen.dart';
 import 'package:aqua_ly/routes.dart';
 import 'package:aqua_ly/theme.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class Aqualy extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Aqua.ly',
       theme: appTheme,
-      initialRoute: CustomerProfileSetupScreen.id,
+      initialRoute: MainScreen.id,
       routes: routes,
     );
   }
