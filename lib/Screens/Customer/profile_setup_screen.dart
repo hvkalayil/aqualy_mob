@@ -114,7 +114,7 @@ class _CustomerProfileSetupScreenState
                         return null;
                       },
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(FontAwesomeIcons.pen,
+                        prefixIcon: const Icon(FontAwesomeIcons.user,
                           size: 20,
                           color: Colors.black54,),
                         border: OutlineInputBorder(
