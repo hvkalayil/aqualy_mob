@@ -12,10 +12,11 @@ environment:
 
 dependencies:
 
+
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.0
+  font_awesome_flutter: ^8.10.0
 
 #  Validating Email in Auth
   email_validator: '^1.0.0'
