@@ -43,49 +43,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(isSeller
-                      ? 'assets/graphics/logo-1.png'
-                      : 'assets/graphics/gold.png'),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 200,
+                    margin: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20)),
+                        color: kPrimaryColor.withOpacity(0.2),
+                        image: DecorationImage(
+                            image: AssetImage(isSeller
+                                ? 'assets/graphics/sellerImg.png'
+                                : 'assets/graphics/customerImg.png'))),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Column(
-                        children: [
-                          IconButton(
-                              icon: Icon(
-                                Icons.ac_unit,
-                                color: isSeller ? kPrimaryColor : Colors.grey,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  isSeller = !isSeller;
-                                });
-                              }),
-                          Text(
-                            'Seller',
-                            style: TextStyle(
-                                color: isSeller ? kPrimaryColor : Colors.grey),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          IconButton(
-                              icon: Icon(
-                                Icons.input,
-                                color: !isSeller ? kPrimaryColor : Colors.grey,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  isSeller = !isSeller;
-                                });
-                              }),
-                          Text('Customer',
-                              style: TextStyle(
-                                  color:
-                                      !isSeller ? kPrimaryColor : Colors.grey))
-                        ],
-                      ),
+                      makeUserTypeButton(seller: true),
+                      makeUserTypeButton(seller: false),
                     ],
                   )
                 ],
@@ -278,4 +253,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
             textAlign: TextAlign.center,
           )));
+
+  GestureDetector makeUserTypeButton({bool seller}) {
+    final String img = seller ? 'sellerIcon.png' : 'customerIcon.png';
+    final bool isActive = seller == isSeller;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isSeller = seller;
+        });
+      },
+      child: Container(
+        width: 100,
+        height: 125,
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+            boxShadow: isActive
+                ? [
+                    BoxShadow(
+                        color: kPrimaryColor.withOpacity(0.25),
+                        spreadRadius: 2,
+                        blurRadius: 4)
+                  ]
+                : [],
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            color: Colors.white),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/graphics/$img'),
+            const SizedBox(height: 5),
+            Text(
+              seller ? 'Seller' : 'Customer',
+              style: const TextStyle(color: Colors.grey),
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }

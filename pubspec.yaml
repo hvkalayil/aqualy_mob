@@ -15,7 +15,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.0
+  font_awesome_flutter: ^8.10.0
 
 #  Validating Email in Auth
   email_validator: '^1.0.0'
@@ -25,6 +25,7 @@ dependencies:
   firebase_core: ^0.5.1
   firebase_auth: ^0.18.2
   cloud_firestore: ^0.14.2
+  firebase_storage: ^5.0.1
 
 #  Local Persistence
   shared_preferences: ^0.5.12+2

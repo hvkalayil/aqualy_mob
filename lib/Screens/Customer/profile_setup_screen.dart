@@ -1,6 +1,10 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as p;
 
 import '../../theme.dart';
 
@@ -19,6 +23,8 @@ class _CustomerProfileSetupScreenState
   final ImagePicker _picker = ImagePicker();
   static const kSmallSpacing = SizedBox(height: 10);
   static const kBigSpacing = SizedBox(height: 20);
+
+  String name, mobile, location;
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +126,7 @@ class _CustomerProfileSetupScreenState
                       ),
                       keyboardType: TextInputType.name,
                       textInputAction: TextInputAction.next,
+                      onSaved: (input) => name = input,
                     ),
                     kSmallSpacing,
 
@@ -139,6 +146,7 @@ class _CustomerProfileSetupScreenState
                       ),
                       keyboardType: TextInputType.phone,
                       textInputAction: TextInputAction.next,
+                      onSaved: (input) => mobile = input,
                     ),
                     kSmallSpacing,
 
@@ -158,6 +166,7 @@ class _CustomerProfileSetupScreenState
                       ),
                       keyboardType: TextInputType.streetAddress,
                       textInputAction: TextInputAction.done,
+                      onSaved: (input) => location = input,
                     ),
                     kSmallSpacing,
 
@@ -251,7 +260,34 @@ class _CustomerProfileSetupScreenState
     );
   }
 
-  void onRegisterClick() {
-    _formKey.currentState.validate();
+  Future<void> onRegisterClick() async {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      final String uid = FirebaseAuth.instance.currentUser.uid;
+      final String fileName = p.basename(_imageFile.path);
+
+      //Uploading file
+      try {
+        final Reference firebaseStorageRef =
+            FirebaseStorage.instance.ref().child('uploads/$uid/$fileName');
+        final uploadTask =
+            await firebaseStorageRef.putFile(File(_imageFile.path));
+        final String url = await uploadTask.ref.getDownloadURL();
+
+        await FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'name': name,
+          'mobile': mobile,
+          'location': location,
+          'profileImg': url
+        });
+      } catch (e) {
+        // ignore: avoid_print
+        print(e.toString());
+        Scaffold.of(context).showSnackBar(const SnackBar(
+            content: Text('Unable to upload Profile image.'
+                ' Make sure you have a stable network connection '
+                'and try again')));
+      }
+    }
   }
 }
