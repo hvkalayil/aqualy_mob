@@ -12,6 +12,8 @@ environment:
 
 dependencies:
 
+  font_awesome_flutter: ^8.10.0
+
   flutter:
     sdk: flutter
 

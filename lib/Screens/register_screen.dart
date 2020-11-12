@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../shared_prefs.dart';
 
@@ -119,7 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 });
                               },
                               icon: Icon(hidePassword
-                                  ? Icons.remove_red_eye_outlined
+                                  ? FontAwesomeIcons.envelopeSquare
                                   : Icons.remove_red_eye),
                             ),
                             prefixIcon: const Icon(
@@ -159,7 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 });
                               },
                               icon: Icon(hidePassword
-                                  ? Icons.remove_red_eye_outlined
+                                  ? FontAwesomeIcons.envelopeSquare
                                   : Icons.remove_red_eye),
                             ),
                             prefixIcon: const Icon(
