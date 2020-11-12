@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = 'login';
@@ -111,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                           },
                           icon: Icon(hidePassword
-                              ? Icons.remove_red_eye_outlined
+                              ? FontAwesomeIcons.envelopeSquare
                               : Icons.remove_red_eye),
                         ),
                         prefixIcon: const Icon(
