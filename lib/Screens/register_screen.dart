@@ -90,8 +90,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             labelText: "Email",
                             hintText: 'Enter your Email Address',
                             prefixIcon: const Icon(
-                              Icons.email,
-                              color: Colors.red,
+                              FontAwesomeIcons.solidEnvelope,
+                              color: Colors.black54,size: 20,
                             )),
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
@@ -120,12 +120,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 });
                               },
                               icon: Icon(hidePassword
-                                  ? FontAwesomeIcons.envelopeSquare
+                                  ? FontAwesomeIcons.solidEyeSlash
                                   : Icons.remove_red_eye),
+                              color: Colors.black54,iconSize: 20,
                             ),
                             prefixIcon: const Icon(
-                              Icons.lock,
-                              color: Colors.black,
+                              FontAwesomeIcons.lock,
+                              color: Colors.black54,size: 20,
                             )),
                         keyboardType: TextInputType.visiblePassword,
                         textInputAction: TextInputAction.next,
@@ -160,12 +161,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 });
                               },
                               icon: Icon(hidePassword
-                                  ? FontAwesomeIcons.envelopeSquare
-                                  : Icons.remove_red_eye),
+                                  ? FontAwesomeIcons.solidEyeSlash
+                                  : Icons.remove_red_eye)
+                              ,color: Colors.black54 ,iconSize: 20,
                             ),
                             prefixIcon: const Icon(
-                              Icons.lock,
-                              color: Colors.black,
+                              FontAwesomeIcons.lock,
+                              color: Colors.black54,size: 20,
                             )),
                         keyboardType: TextInputType.visiblePassword,
                         textInputAction: TextInputAction.done,

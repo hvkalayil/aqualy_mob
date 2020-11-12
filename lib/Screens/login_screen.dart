@@ -83,8 +83,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(20)),
                         labelText: "Email",
                         prefixIcon: const Icon(
-                          Icons.email,
-                          color: Colors.red,
+                          FontAwesomeIcons.solidEnvelope,
+                          color: Colors.black54,
                         )),
                     onSaved: (input) => email = input,
                     keyboardType: TextInputType.emailAddress,
@@ -112,12 +112,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                           },
                           icon: Icon(hidePassword
-                              ? FontAwesomeIcons.envelopeSquare
+                              ? FontAwesomeIcons.eye
                               : Icons.remove_red_eye),
                         ),
                         prefixIcon: const Icon(
-                          Icons.lock,
-                          color: Colors.black,
+                          FontAwesomeIcons.lock,
+                          color: Colors.black54,
                         )),
                     onSaved: (input) => pass = input,
                     keyboardType: TextInputType.visiblePassword,

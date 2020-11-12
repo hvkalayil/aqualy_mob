@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 
@@ -95,8 +96,8 @@ class _CustomerProfileSetupScreenState
                             builder: (builder) => buildBottomOverlay());
                       },
                       child: const Icon(
-                        Icons.camera_alt,
-                        color: kPrimaryColor,
+                        FontAwesomeIcons.camera,
+                        color: kPrimaryColor,size: 20,
                       )),
                 )
               ],
@@ -119,7 +120,9 @@ class _CustomerProfileSetupScreenState
                         return null;
                       },
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.add),
+                        prefixIcon: const Icon(FontAwesomeIcons.user,
+                          size: 20,
+                          color: Colors.black54,),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         labelText: "Name",
@@ -139,7 +142,9 @@ class _CustomerProfileSetupScreenState
                         return null;
                       },
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.add),
+                        prefixIcon: const Icon(FontAwesomeIcons.mobileAlt,
+                          color: Colors.black54,
+                          size: 20,),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         labelText: "Mobile",
@@ -159,7 +164,9 @@ class _CustomerProfileSetupScreenState
                         return null;
                       },
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.add),
+                        prefixIcon: const Icon(FontAwesomeIcons.addressCard,
+                        size: 20,
+                            color: Colors.black54,),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         labelText: "Address",
@@ -203,7 +210,7 @@ class _CustomerProfileSetupScreenState
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
-            "Select profile pic",
+            "Select profile picture",
             style: TextStyle(
                 fontSize: 22,
                 color: kPrimaryColor,
@@ -225,8 +232,8 @@ class _CustomerProfileSetupScreenState
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   icon: const Icon(
-                    Icons.camera,
-                    color: Colors.white,
+                    FontAwesomeIcons.camera,
+                    color: Colors.white,size: 20,
                   ),
                   label: const Text(
                     "Camera",
@@ -246,8 +253,8 @@ class _CustomerProfileSetupScreenState
                   shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   icon: const Icon(
-                    Icons.image,
-                    color: Colors.white,
+                    FontAwesomeIcons.images,
+                    color: Colors.white,size: 20,
                   ),
                   label: const Text(
                     "Gallery",
