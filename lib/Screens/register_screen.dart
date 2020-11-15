@@ -1,8 +1,11 @@
+import 'package:aqua_ly/Screens/Customer/profile_setup_screen.dart';
+import 'package:aqua_ly/Screens/Seller/seller_profile_setup_screen.dart';
 import 'package:aqua_ly/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../shared_prefs.dart';
 
@@ -43,49 +46,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image.asset(isSeller
-                      ? 'assets/graphics/logo-1.png'
-                      : 'assets/graphics/gold.png'),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 200,
+                    margin: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20)),
+                        color: kPrimaryColor.withOpacity(0.2),
+                        image: DecorationImage(
+                            image: AssetImage(isSeller
+                                ? 'assets/graphics/sellerImg.png'
+                                : 'assets/graphics/customerImg.png'))),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Column(
-                        children: [
-                          IconButton(
-                              icon: Icon(
-                                Icons.ac_unit,
-                                color: isSeller ? kPrimaryColor : Colors.grey,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  isSeller = !isSeller;
-                                });
-                              }),
-                          Text(
-                            'Seller',
-                            style: TextStyle(
-                                color: isSeller ? kPrimaryColor : Colors.grey),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          IconButton(
-                              icon: Icon(
-                                Icons.input,
-                                color: !isSeller ? kPrimaryColor : Colors.grey,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  isSeller = !isSeller;
-                                });
-                              }),
-                          Text('Customer',
-                              style: TextStyle(
-                                  color:
-                                      !isSeller ? kPrimaryColor : Colors.grey))
-                        ],
-                      ),
+                      makeUserTypeButton(seller: true),
+                      makeUserTypeButton(seller: false),
                     ],
                   )
                 ],
@@ -114,8 +92,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             labelText: "Email",
                             hintText: 'Enter your Email Address',
                             prefixIcon: const Icon(
-                              Icons.email,
-                              color: Colors.red,
+                              FontAwesomeIcons.solidEnvelope,
+                              color: Colors.black54,
+                              size: 20,
                             )),
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
@@ -144,12 +123,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 });
                               },
                               icon: Icon(hidePassword
-                                  ? Icons.remove_red_eye_outlined
-                                  : Icons.remove_red_eye),
+                                  ? FontAwesomeIcons.solidEyeSlash
+                                  : FontAwesomeIcons.eye),
+                              color: Colors.black54,
+                              iconSize: 20,
                             ),
                             prefixIcon: const Icon(
-                              Icons.lock,
-                              color: Colors.black,
+                              FontAwesomeIcons.lock,
+                              color: Colors.black54,
+                              size: 20,
                             )),
                         keyboardType: TextInputType.visiblePassword,
                         textInputAction: TextInputAction.next,
@@ -183,13 +165,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   hideRePassword = !hideRePassword;
                                 });
                               },
-                              icon: Icon(hidePassword
-                                  ? Icons.remove_red_eye_outlined
-                                  : Icons.remove_red_eye),
+                              icon: Icon(hideRePassword
+                                  ? FontAwesomeIcons.solidEyeSlash
+                                  : FontAwesomeIcons.eye),
+                              color: Colors.black54,
+                              iconSize: 20,
                             ),
                             prefixIcon: const Icon(
-                              Icons.lock,
-                              color: Colors.black,
+                              FontAwesomeIcons.lock,
+                              color: Colors.black54,
+                              size: 20,
                             )),
                         keyboardType: TextInputType.visiblePassword,
                         textInputAction: TextInputAction.done,
@@ -238,7 +223,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             .createUserWithEmailAndPassword(email: email, password: pass);
         final String uid = credential.user.uid;
 
-        final String newRoute = isSeller ? 'Seller' : 'Customer';
+        final String newRoute = isSeller
+            ? SellerProfileSetupScreen.id
+            : CustomerProfileSetupScreen.id;
         FirebaseFirestore.instance
             .collection('users')
             .doc(uid)
@@ -278,4 +265,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
             textAlign: TextAlign.center,
           )));
+
+  GestureDetector makeUserTypeButton({bool seller}) {
+    final String img = seller ? 'sellerIcon.png' : 'customerIcon.png';
+    final bool isActive = seller == isSeller;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isSeller = seller;
+        });
+      },
+      child: Container(
+        width: 100,
+        height: 125,
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+            boxShadow: isActive
+                ? [
+                    BoxShadow(
+                        color: kPrimaryColor.withOpacity(0.25),
+                        spreadRadius: 2,
+                        blurRadius: 4)
+                  ]
+                : [],
+            borderRadius: const BorderRadius.all(Radius.circular(20)),
+            color: Colors.white),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/graphics/$img'),
+            const SizedBox(height: 5),
+            Text(
+              seller ? 'Seller' : 'Customer',
+              style: const TextStyle(color: Colors.grey),
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }

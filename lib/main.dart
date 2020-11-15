@@ -1,10 +1,8 @@
-import 'package:aqua_ly/Screens/Customer/main_screen.dart';
+import 'package:aqua_ly/Screens/Seller/seller_main_screen.dart';
 import 'package:aqua_ly/routes.dart';
 import 'package:aqua_ly/theme.dart';
 import 'package:flutter/material.dart';
 
-import 'Screens/Customer/profile_setup_screen.dart';
-import 'Screens/splash_screen.dart';
 
 void main() {
   runApp(Aqualy());
@@ -17,7 +15,7 @@ class Aqualy extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Aqua.ly',
       theme: appTheme,
-      initialRoute: MainScreen.id,
+      initialRoute: SellerMainScreen.id,
       routes: routes,
     );
   }
