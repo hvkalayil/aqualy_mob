@@ -54,3 +54,6 @@ flutter:
          - asset: assets/fonts/Roboto-Medium.ttf
          - asset: assets/fonts/Roboto-Regular.ttf
          - asset: assets/fonts/Roboto-Light.ttf
+    - family: Mont
+      fonts:
+          - asset: assets/fonts/Montserrat-Medium.ttf

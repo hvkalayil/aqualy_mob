@@ -1,3 +1,5 @@
+import 'package:aqua_ly/Screens/Customer/profile_setup_screen.dart';
+import 'package:aqua_ly/Screens/Seller/seller_profile_setup_screen.dart';
 import 'package:aqua_ly/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
@@ -91,7 +93,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             hintText: 'Enter your Email Address',
                             prefixIcon: const Icon(
                               FontAwesomeIcons.solidEnvelope,
-                              color: Colors.black54,size: 20,
+                              color: Colors.black54,
+                              size: 20,
                             )),
                         keyboardType: TextInputType.emailAddress,
                         textInputAction: TextInputAction.next,
@@ -121,12 +124,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               },
                               icon: Icon(hidePassword
                                   ? FontAwesomeIcons.solidEyeSlash
-                                  : Icons.remove_red_eye),
-                              color: Colors.black54,iconSize: 20,
+                                  : FontAwesomeIcons.eye),
+                              color: Colors.black54,
+                              iconSize: 20,
                             ),
                             prefixIcon: const Icon(
                               FontAwesomeIcons.lock,
-                              color: Colors.black54,size: 20,
+                              color: Colors.black54,
+                              size: 20,
                             )),
                         keyboardType: TextInputType.visiblePassword,
                         textInputAction: TextInputAction.next,
@@ -160,14 +165,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   hideRePassword = !hideRePassword;
                                 });
                               },
-                              icon: Icon(hidePassword
+                              icon: Icon(hideRePassword
                                   ? FontAwesomeIcons.solidEyeSlash
-                                  : Icons.remove_red_eye)
-                              ,color: Colors.black54 ,iconSize: 20,
+                                  : FontAwesomeIcons.eye),
+                              color: Colors.black54,
+                              iconSize: 20,
                             ),
                             prefixIcon: const Icon(
                               FontAwesomeIcons.lock,
-                              color: Colors.black54,size: 20,
+                              color: Colors.black54,
+                              size: 20,
                             )),
                         keyboardType: TextInputType.visiblePassword,
                         textInputAction: TextInputAction.done,
@@ -216,7 +223,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             .createUserWithEmailAndPassword(email: email, password: pass);
         final String uid = credential.user.uid;
 
-        final String newRoute = isSeller ? 'Seller' : 'Customer';
+        final String newRoute = isSeller
+            ? SellerProfileSetupScreen.id
+            : CustomerProfileSetupScreen.id;
         FirebaseFirestore.instance
             .collection('users')
             .doc(uid)

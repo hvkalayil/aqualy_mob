@@ -1,26 +1,31 @@
 import 'dart:io';
-import 'package:email_validator/email_validator.dart';
+
+import 'package:aqua_ly/Screens/Seller/seller_main_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as p;
 
 import '../../theme.dart';
 
 class SellerProfileSetupScreen extends StatefulWidget {
-  static String id = 'Customer';
+  static String id = 'Seller';
 
   @override
   _SellerProfileSetupScreenState createState() =>
       _SellerProfileSetupScreenState();
 }
 
-class _SellerProfileSetupScreenState
-    extends State<SellerProfileSetupScreen> {
+class _SellerProfileSetupScreenState extends State<SellerProfileSetupScreen> {
   PickedFile _imageFile;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
   static const kSmallSpacing = SizedBox(height: 10);
   static const kBigSpacing = SizedBox(height: 20);
+  String name, mobile, location;
 
   @override
   Widget build(BuildContext context) {
@@ -61,19 +66,19 @@ class _SellerProfileSetupScreenState
                     height: 140,
                     decoration: _imageFile == null
                         ? const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage('assets/graphics/male.png'),
-                        fit: BoxFit.cover,
-                      ),
-                    )
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: AssetImage('assets/graphics/male.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          )
                         : BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: FileImage(File(_imageFile.path)),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: FileImage(File(_imageFile.path)),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                   ),
                 ),
 
@@ -92,7 +97,8 @@ class _SellerProfileSetupScreenState
                       },
                       child: const Icon(
                         FontAwesomeIcons.camera,
-                        color: kPrimaryColor,size: 20,
+                        color: kPrimaryColor,
+                        size: 20,
                       )),
                 )
               ],
@@ -115,9 +121,11 @@ class _SellerProfileSetupScreenState
                         return null;
                       },
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(FontAwesomeIcons.user,
+                        prefixIcon: const Icon(
+                          FontAwesomeIcons.user,
                           size: 20,
-                          color: Colors.black54,),
+                          color: Colors.black54,
+                        ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         labelText: "Seller Name",
@@ -136,9 +144,11 @@ class _SellerProfileSetupScreenState
                         return null;
                       },
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(FontAwesomeIcons.building,
+                        prefixIcon: const Icon(
+                          FontAwesomeIcons.building,
                           size: 20,
-                          color: Colors.black54,),
+                          color: Colors.black54,
+                        ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         labelText: "Company name",
@@ -157,9 +167,11 @@ class _SellerProfileSetupScreenState
                         return null;
                       },
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(FontAwesomeIcons.mobileAlt,
+                        prefixIcon: const Icon(
+                          FontAwesomeIcons.mobileAlt,
                           color: Colors.black54,
-                          size: 20,),
+                          size: 20,
+                        ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         labelText: "Mobile",
@@ -178,9 +190,11 @@ class _SellerProfileSetupScreenState
                         return null;
                       },
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(FontAwesomeIcons.addressCard,
+                        prefixIcon: const Icon(
+                          FontAwesomeIcons.addressCard,
                           size: 20,
-                          color: Colors.black54,),
+                          color: Colors.black54,
+                        ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         labelText: "Address",
@@ -189,7 +203,6 @@ class _SellerProfileSetupScreenState
                       textInputAction: TextInputAction.done,
                     ),
                     kSmallSpacing,
-
 
                     //Button
                     RaisedButton(
@@ -209,10 +222,8 @@ class _SellerProfileSetupScreenState
                     ),
 
                     //Validate Button
-
                     FlatButton(
-                        onPressed: () =>
-                            Navigator.pushNamed,
+                        onPressed: () {},
                         child: const Text(
                           "Verify Email",
                           style: TextStyle(color: Colors.blue, fontSize: 15),
@@ -226,6 +237,7 @@ class _SellerProfileSetupScreenState
       ),
     );
   }
+
   SizedBox buildBottomOverlay() {
     return SizedBox(
       height: 150,
@@ -245,7 +257,7 @@ class _SellerProfileSetupScreenState
               RaisedButton.icon(
                   onPressed: () async {
                     final pickedFile =
-                    await _picker.getImage(source: ImageSource.camera);
+                        await _picker.getImage(source: ImageSource.camera);
                     setState(() {
                       _imageFile = pickedFile;
                     });
@@ -256,7 +268,8 @@ class _SellerProfileSetupScreenState
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   icon: const Icon(
                     FontAwesomeIcons.camera,
-                    color: Colors.white,size: 20,
+                    color: Colors.white,
+                    size: 20,
                   ),
                   label: const Text(
                     "Camera",
@@ -266,7 +279,7 @@ class _SellerProfileSetupScreenState
               RaisedButton.icon(
                   onPressed: () async {
                     final pickedFile =
-                    await _picker.getImage(source: ImageSource.gallery);
+                        await _picker.getImage(source: ImageSource.gallery);
                     setState(() {
                       _imageFile = pickedFile;
                     });
@@ -277,7 +290,8 @@ class _SellerProfileSetupScreenState
                       borderRadius: BorderRadius.all(Radius.circular(25))),
                   icon: const Icon(
                     FontAwesomeIcons.images,
-                    color: Colors.white,size: 20,
+                    color: Colors.white,
+                    size: 20,
                   ),
                   label: const Text(
                     "Gallery",
@@ -290,7 +304,36 @@ class _SellerProfileSetupScreenState
     );
   }
 
-  void onRegisterClick() {
-    _formKey.currentState.validate();
+  Future<void> onRegisterClick() async {
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      final String uid = FirebaseAuth.instance.currentUser.uid;
+      final String fileName = p.basename(_imageFile.path);
+
+      //Uploading file
+      try {
+        final Reference firebaseStorageRef =
+            FirebaseStorage.instance.ref().child('uploads/$uid/$fileName');
+        final uploadTask =
+            await firebaseStorageRef.putFile(File(_imageFile.path));
+        final String url = await uploadTask.ref.getDownloadURL();
+
+        await FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'name': name,
+          'mobile': mobile,
+          'location': location,
+          'profileImg': url
+        });
+
+        Navigator.popAndPushNamed(context, SellerMainScreen.id);
+      } catch (e) {
+        // ignore: avoid_print
+        print(e.toString());
+        Scaffold.of(context).showSnackBar(const SnackBar(
+            content: Text('Unable to upload Profile image.'
+                ' Make sure you have a stable network connection '
+                'and try again')));
+      }
+    }
   }
 }

@@ -1,11 +1,16 @@
 import 'package:aqua_ly/Screens/Seller/seller_home_screen.dart';
+import 'package:aqua_ly/Screens/Seller/seller_listing_screen.dart';
 import 'package:aqua_ly/Screens/Seller/seller_orders_screen.dart';
 import 'package:aqua_ly/Screens/Seller/seller_products_screen.dart';
 import 'package:aqua_ly/Screens/Seller/seller_profile_screen.dart';
+import 'package:aqua_ly/Screens/login_screen.dart';
 import 'package:aqua_ly/theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluid_bottom_nav_bar/fluid_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../../shared_prefs.dart';
 
 class SellerMainScreen extends StatefulWidget {
   static String id = 'Seller Main Screen Id';
@@ -21,6 +26,7 @@ class _SellerMainScreenState extends State<SellerMainScreen> {
   List<Widget> pages = [
     SellerHomeScreen(),
     SellerProductScreen(),
+    SellerListingScreen(),
     SellerOrdersScreen(),
     SellerProfileScreen()
   ];
@@ -29,6 +35,23 @@ class _SellerMainScreenState extends State<SellerMainScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Hi, Seller'),
+        actions: [
+          FlatButton.icon(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, LoginScreen.id, (route) => false);
+                SharedPrefs.clearAll();
+              },
+              icon: const Icon(
+                FontAwesomeIcons.signOutAlt,
+                color: Colors.white,
+              ),
+              label: const Text(
+                'Sign Out',
+                style: TextStyle(color: Colors.white),
+              ))
+        ],
       ),
       body: pages[currentIndex],
       bottomNavigationBar: FluidNavBar(
@@ -45,7 +68,9 @@ class _SellerMainScreenState extends State<SellerMainScreen> {
           FluidNavBarIcon(
               icon: FontAwesomeIcons.home, extras: {'label': 'Home'}),
           FluidNavBarIcon(
-              icon: FontAwesomeIcons.sitemap, extras: {'label': 'Products'}),
+              icon: FontAwesomeIcons.archive, extras: {'label': 'Products'}),
+          FluidNavBarIcon(
+              icon: FontAwesomeIcons.list, extras: {'label': 'Listing'}),
           FluidNavBarIcon(
               icon: FontAwesomeIcons.clipboardList,
               extras: {'label': 'Orders'}),

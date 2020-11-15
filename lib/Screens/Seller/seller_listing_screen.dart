@@ -3,12 +3,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../theme.dart';
 
-class SellerProductScreen extends StatefulWidget {
+class SellerListingScreen extends StatefulWidget {
   @override
-  _SellerProductScreenState createState() => _SellerProductScreenState();
+  _SellerListingScreenState createState() => _SellerListingScreenState();
 }
 
-class _SellerProductScreenState extends State<SellerProductScreen> {
+class _SellerListingScreenState extends State<SellerListingScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -26,7 +26,7 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'Your Products',
+                'Your Listings',
                 style: TextStyle(fontSize: 24, color: Colors.white),
               ),
               FlatButton(
@@ -50,17 +50,17 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
                   image: 'fish1.png',
                   name: 'HALFMOON BETTA',
                   price: '200',
-                  status: true),
+                  sold: '40'),
               makeFish(
                   image: 'fish2.png',
                   name: 'GOLD FISH',
                   price: '50',
-                  status: false),
+                  sold: '5'),
               makeFish(
                   image: 'fish1.png',
                   name: 'HALFMOON BETTA',
                   price: '200',
-                  status: true),
+                  sold: '100'),
             ],
           ),
         )
@@ -70,14 +70,14 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
 
   bool isLove = false;
 
-  Container makeFish({String image, String name, String price, bool status}) {
+  Container makeFish({String image, String name, String price, String sold}) {
     return Container(
       height: 100,
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-          color: status ? Colors.green : kPrimaryColor,
-          borderRadius: const BorderRadius.all(Radius.circular(20))),
+      decoration: const BoxDecoration(
+          color: kPrimaryColor,
+          borderRadius: BorderRadius.all(Radius.circular(20))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -104,20 +104,9 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
                 'Rs $price',
                 style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
-              Row(
-                children: [
-                  Icon(
-                    status
-                        ? FontAwesomeIcons.userCheck
-                        : FontAwesomeIcons.microscope,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    status ? 'Verified' : 'Verifying',
-                    style: const TextStyle(color: Colors.white, fontSize: 20),
-                  )
-                ],
+              Text(
+                '$sold Sold',
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               )
             ],
           )

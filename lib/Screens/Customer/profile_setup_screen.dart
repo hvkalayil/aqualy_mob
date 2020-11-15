@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:aqua_ly/Screens/Customer/main_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -97,7 +98,8 @@ class _CustomerProfileSetupScreenState
                       },
                       child: const Icon(
                         FontAwesomeIcons.camera,
-                        color: kPrimaryColor,size: 20,
+                        color: kPrimaryColor,
+                        size: 20,
                       )),
                 )
               ],
@@ -120,9 +122,11 @@ class _CustomerProfileSetupScreenState
                         return null;
                       },
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(FontAwesomeIcons.user,
+                        prefixIcon: const Icon(
+                          FontAwesomeIcons.user,
                           size: 20,
-                          color: Colors.black54,),
+                          color: Colors.black54,
+                        ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         labelText: "Name",
@@ -142,9 +146,11 @@ class _CustomerProfileSetupScreenState
                         return null;
                       },
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(FontAwesomeIcons.mobileAlt,
+                        prefixIcon: const Icon(
+                          FontAwesomeIcons.mobileAlt,
                           color: Colors.black54,
-                          size: 20,),
+                          size: 20,
+                        ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         labelText: "Mobile",
@@ -164,9 +170,11 @@ class _CustomerProfileSetupScreenState
                         return null;
                       },
                       decoration: InputDecoration(
-                        prefixIcon: const Icon(FontAwesomeIcons.addressCard,
-                        size: 20,
-                            color: Colors.black54,),
+                        prefixIcon: const Icon(
+                          FontAwesomeIcons.addressCard,
+                          size: 20,
+                          color: Colors.black54,
+                        ),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20)),
                         labelText: "Address",
@@ -233,7 +241,8 @@ class _CustomerProfileSetupScreenState
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   icon: const Icon(
                     FontAwesomeIcons.camera,
-                    color: Colors.white,size: 20,
+                    color: Colors.white,
+                    size: 20,
                   ),
                   label: const Text(
                     "Camera",
@@ -254,7 +263,8 @@ class _CustomerProfileSetupScreenState
                       borderRadius: BorderRadius.all(Radius.circular(20))),
                   icon: const Icon(
                     FontAwesomeIcons.images,
-                    color: Colors.white,size: 20,
+                    color: Colors.white,
+                    size: 20,
                   ),
                   label: const Text(
                     "Gallery",
@@ -287,6 +297,8 @@ class _CustomerProfileSetupScreenState
           'location': location,
           'profileImg': url
         });
+
+        Navigator.popAndPushNamed(context, MainScreen.id);
       } catch (e) {
         // ignore: avoid_print
         print(e.toString());
