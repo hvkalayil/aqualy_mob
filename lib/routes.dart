@@ -1,3 +1,4 @@
+import 'package:aqua_ly/test.dart';
 import 'package:flutter/material.dart';
 
 import 'Screens/Customer/fish_info_screen.dart';
@@ -11,6 +12,7 @@ import 'Screens/splash_screen.dart';
 
 final Map<String, Widget Function(BuildContext)> routes = {
   //Common Routes
+  TestScreen.id: (_) => TestScreen(),
   SplashScreen.id: (_) => SplashScreen(),
   FishInfoScreen.id: (_) => const FishInfoScreen(),
   LoginScreen.id: (_) => const LoginScreen(),

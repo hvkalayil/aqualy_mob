@@ -35,6 +35,9 @@ dependencies:
 # Bottom Nav Bar
   fluid_bottom_nav_bar: ^1.2.0
 
+# Api
+  http: ^0.12.2
+
 dev_dependencies:
   lint: ^1.0.0
   flutter_test:
