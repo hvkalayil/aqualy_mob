@@ -56,11 +56,6 @@ class _SellerListingScreenState extends State<SellerListingScreen> {
                   name: 'GOLD FISH',
                   price: '50',
                   sold: '5'),
-              makeFish(
-                  image: 'fish1.png',
-                  name: 'HALFMOON BETTA',
-                  price: '200',
-                  sold: '100'),
             ],
           ),
         )
@@ -101,7 +96,7 @@ class _SellerListingScreenState extends State<SellerListingScreen> {
                 ),
               ),
               Text(
-                'Rs $price',
+                '₹ $price',
                 style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
               Text(

@@ -56,11 +56,6 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
                   name: 'GOLD FISH',
                   price: '50',
                   status: false),
-              makeFish(
-                  image: 'fish1.png',
-                  name: 'HALFMOON BETTA',
-                  price: '200',
-                  status: true),
             ],
           ),
         )
@@ -101,7 +96,7 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
                 ),
               ),
               Text(
-                'Rs $price',
+                '₹ $price',
                 style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
               Row(

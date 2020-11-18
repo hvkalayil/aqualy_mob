@@ -33,7 +33,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                     style: TextStyle(color: Colors.white, fontSize: 28),
                   ),
                   const Text(
-                    'Rs 15,000',
+                    '₹ 15,000',
                     style: TextStyle(
                         color: Colors.white, fontSize: 38, letterSpacing: 2),
                   ),
@@ -144,15 +144,11 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                         makeFish(
                             image: 'fish1.png',
                             name: 'HALFMOON BETTA',
-                            price: '200'),
+                            price: '50'),
                         makeFish(
                             image: 'fish2.png',
                             name: 'GOLD FISH',
-                            price: '200'),
-                        makeFish(
-                            image: 'fish1.png',
-                            name: 'HALFMOON BETTA',
-                            price: '200'),
+                            price: '100'),
                       ],
                     ),
                   )
@@ -183,7 +179,7 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                     image: AssetImage('assets/graphics/$image'))),
           ),
           Positioned(
-            bottom: 20,
+            top: 10,
             left: 10,
             child: SizedBox(
               width: 150,
@@ -191,34 +187,21 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
               child: Text(
                 name,
                 softWrap: true,
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white),
               ),
             ),
           ),
           Positioned(
-              bottom: 15,
-              left: 10,
-              child: Text(price,
+              bottom: 10,
+              right: 10,
+              child: Text('₹ $price',
                   style: const TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.w900))),
-          Positioned(
-            right: 0,
-            bottom: 10,
-            child: RaisedButton(
-              padding: const EdgeInsets.all(8),
-              shape: const CircleBorder(),
-              onPressed: () {
-                setState(() {
-                  isLove = !isLove;
-                });
-              },
-              child: Icon(
-                isLove ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
-                color: Colors.redAccent,
-              ),
-            ),
-          )
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white))),
         ],
       ),
     );

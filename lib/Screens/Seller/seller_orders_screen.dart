@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../theme.dart';
 
@@ -15,30 +14,17 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
       children: [
         //Recently Added Heading
         Container(
-          padding: const EdgeInsets.all(8.0),
+          width: MediaQuery.of(context).size.width,
+          padding: const EdgeInsets.all(10),
           margin: const EdgeInsets.all(10),
           decoration: const BoxDecoration(
               color: kPrimaryColor,
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(20),
                   bottomLeft: Radius.circular(20))),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Pending Orders',
-                style: TextStyle(fontSize: 24, color: Colors.white),
-              ),
-              FlatButton(
-                onPressed: () {},
-                color: Colors.white,
-                shape: const CircleBorder(),
-                child: const Icon(
-                  FontAwesomeIcons.plus,
-                  color: kPrimaryColor,
-                ),
-              )
-            ],
+          child: const Text(
+            'Pending Orders',
+            style: TextStyle(fontSize: 24, color: Colors.white),
           ),
         ),
 
@@ -56,11 +42,6 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
                   name: 'GOLD FISH',
                   price: '50',
                   location: 'Palai'),
-              makeFish(
-                  image: 'fish1.png',
-                  name: 'HALFMOON BETTA',
-                  price: '200',
-                  location: 'Kozhikode'),
             ],
           ),
         ),
@@ -116,7 +97,7 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
                 ),
               ),
               Text(
-                'Rs $price',
+                '₹ $price',
                 style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
               Text(

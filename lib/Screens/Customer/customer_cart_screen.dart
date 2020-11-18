@@ -1,4 +1,5 @@
 import 'package:aqua_ly/theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -28,59 +29,93 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            "MY CART",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
-          Expanded(
-            child: ListView(
-              children: [
-                makeFish(
-                    image: 'fish1.png',
-                    name: 'HALFMOON BETTA',
-                    price: '200',
-                    no: "3"),
-                makeFish(
-                    image: 'fish2.png',
-                    name: 'GOLD FISH',
-                    price: '50',
-                    no: '1'),
-              ],
+          //Heading
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.1,
+            child: const Center(
+              child: Text(
+                "MY CART",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 28,
+                    color: kPrimaryColor),
+              ),
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const Text("Subtotal(3 items)", style: TextStyle(fontSize: 20)),
-              const Text(
-                "Rs  2860",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              )
-            ],
-          ),
-          Container(
-            width: 300,
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-            child: RaisedButton(
-              onPressed: () {},
-              color: kPrimaryColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+          //Cart
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.only(top: 20),
+              decoration: BoxDecoration(
+                  color: kPrimaryColor.withOpacity(0.5),
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20))),
+              child: ListView(
                 children: [
-                  Text("Check Out",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold)),
-                  Icon(
-                    FontAwesomeIcons.forward,
-                    color: Colors.white,
-                  )
+                  makeFish(
+                      image: 'fish1.png',
+                      name: 'HALFMOON BETTA',
+                      price: '200',
+                      no: "3"),
+                  makeFish(
+                      image: 'fish2.png',
+                      name: 'GOLD FISH',
+                      price: '50',
+                      no: '1'),
                 ],
               ),
             ),
+          ),
+
+          //Total & button
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: const [
+                    Text("Total",
+                        style: TextStyle(fontSize: 20, color: kPrimaryColor)),
+                    Text(
+                      "₹  250",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: kPrimaryColor),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.fromLTRB(10, 10, 10, 20),
+                child: RaisedButton(
+                  onPressed: () {},
+                  color: kPrimaryColor,
+                  padding: const EdgeInsets.all(10),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text("Check Out",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold)),
+                      Icon(
+                        FontAwesomeIcons.forward,
+                        color: Colors.white,
+                      )
+                    ],
+                  ),
+                ),
+              )
+            ],
           )
         ],
       ),
@@ -107,27 +142,34 @@ class _CartScreenState extends State<CartScreen> {
                 image: DecorationImage(
                     image: AssetImage('assets/graphics/$image'))),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                name,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.4,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  name,
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),
                 ),
-              ),
-              Text(
-                'Rs $price',
-                style: const TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            ],
+                Text(
+                  '₹ $price',
+                  style: const TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ],
+            ),
           ),
           Column(
             children: [
               IconButton(
-                  icon: Icon(FontAwesomeIcons.plus),
+                  icon: const Icon(
+                    FontAwesomeIcons.plus,
+                    color: Colors.white,
+                  ),
                   onPressed: () {
                     add();
                   }),
@@ -136,7 +178,10 @@ class _CartScreenState extends State<CartScreen> {
                 style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
               IconButton(
-                  icon: Icon(FontAwesomeIcons.minus),
+                  icon: const Icon(
+                    FontAwesomeIcons.minus,
+                    color: Colors.white,
+                  ),
                   onPressed: () {
                     minus();
                   })

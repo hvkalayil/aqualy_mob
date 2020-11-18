@@ -1,3 +1,4 @@
+import 'package:aqua_ly/Screens/Customer/fish_info_screen.dart';
 import 'package:aqua_ly/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -116,59 +117,45 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   bool isLove = false;
-  Container makeFish({String image, String name, String price}) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-      width: 250,
-      decoration: BoxDecoration(
-          color: kPrimaryColor.withOpacity(0.15),
-          borderRadius: const BorderRadius.all(Radius.circular(20))),
-      child: Stack(
-        children: [
-          Container(
-            transform: Matrix4.translationValues(0, -50, 0),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/graphics/$image'))),
-          ),
-          Positioned(
-            bottom: 20,
-            left: 10,
-            child: SizedBox(
-              width: 200,
-              height: 100,
-              child: Text(
-                name,
-                softWrap: true,
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-              ),
+  GestureDetector makeFish({String image, String name, String price}) {
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, FishInfoScreen.id),
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+        width: 250,
+        decoration: BoxDecoration(
+            color: kPrimaryColor.withOpacity(0.15),
+            borderRadius: const BorderRadius.all(Radius.circular(20))),
+        child: Stack(
+          children: [
+            Container(
+              transform: Matrix4.translationValues(0, -50, 0),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/graphics/$image'))),
             ),
-          ),
-          Positioned(
-              bottom: 15,
+            Positioned(
+              bottom: 20,
               left: 10,
-              child: Text(price,
+              child: SizedBox(
+                width: 200,
+                height: 100,
+                child: Text(
+                  name,
+                  softWrap: true,
                   style: const TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.w900))),
-          Positioned(
-            right: 0,
-            bottom: 10,
-            child: RaisedButton(
-              padding: const EdgeInsets.all(8),
-              shape: const CircleBorder(),
-              onPressed: () {
-                setState(() {
-                  isLove = !isLove;
-                });
-              },
-              child: Icon(
-                isLove ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
-                color: Colors.redAccent,
+                      fontSize: 24, fontWeight: FontWeight.w500),
+                ),
               ),
             ),
-          )
-        ],
+            Positioned(
+                bottom: 15,
+                left: 10,
+                child: Text(price,
+                    style: const TextStyle(
+                        fontSize: 24, fontWeight: FontWeight.w900))),
+          ],
+        ),
       ),
     );
   }
