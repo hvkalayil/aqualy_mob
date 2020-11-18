@@ -1,30 +1,7 @@
 import 'package:aqua_ly/theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class CartScreen extends StatefulWidget {
-  @override
-  _CartScreenState createState() => _CartScreenState();
-}
-
-class _CartScreenState extends State<CartScreen> {
-  int _n = 0;
-  void add() {
-    setState(() {
-      _n++;
-    });
-  }
-
-  void minus() {
-    setState(() {
-      if (_n != 0) _n--;
-    });
-  }
-
-  ///Don't use Scaffold here. These 4 pages have one scaffold
-  ///mentioned in main_screen.dart
-  ///Other screens which does not need the bottom bar can have Scaffold
+class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
