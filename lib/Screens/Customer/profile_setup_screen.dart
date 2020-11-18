@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:aqua_ly/Screens/Customer/main_screen.dart';
+import 'package:aqua_ly/shared_prefs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -298,6 +299,7 @@ class _CustomerProfileSetupScreenState
           'profileImg': url
         });
 
+        await SharedPrefs.saveStr('current_screen', MainScreen.id);
         Navigator.popAndPushNamed(context, MainScreen.id);
       } catch (e) {
         // ignore: avoid_print

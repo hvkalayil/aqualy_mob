@@ -21,200 +21,191 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          kBigSpacing,
-          //Heading 1
-          const Text(
-            "Welcome",
-            style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 4,
-                color: kPrimaryColor),
-          ),
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            kBigSpacing,
+            //Profile Image & Edit Button
+            Stack(
+              children: [
+                //Profile Image
+                CircleAvatar(
+                  backgroundColor: kPrimaryColor,
+                  radius: 80,
+                  child: Container(
+                    height: 140,
+                    decoration: _imageFile == null
+                        ? const BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: AssetImage('assets/graphics/male.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: FileImage(File(_imageFile.path)),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                  ),
+                ),
 
-          kBigSpacing,
-          //Profile Image & Edit Button
-          Stack(
-            children: [
-              //Profile Image
-              CircleAvatar(
-                backgroundColor: kPrimaryColor,
-                radius: 80,
-                child: Container(
-                  height: 140,
-                  decoration: _imageFile == null
-                      ? const BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: AssetImage('assets/graphics/male.png'),
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                      : BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: FileImage(File(_imageFile.path)),
-                            fit: BoxFit.cover,
-                          ),
+                //Edit Button
+                Positioned(
+                  bottom: 0,
+                  right: -10,
+                  child: RaisedButton(
+                      color: Colors.white,
+                      padding: const EdgeInsets.all(16),
+                      shape: const CircleBorder(),
+                      onPressed: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (builder) => buildBottomOverlay());
+                      },
+                      child: const Icon(
+                        FontAwesomeIcons.camera,
+                        color: kPrimaryColor,
+                        size: 20,
+                      )),
+                )
+              ],
+            ),
+            kBigSpacing,
+
+            //Form
+            Container(
+              padding: const EdgeInsets.all(10),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    //Name
+                    TextFormField(
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter name';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          FontAwesomeIcons.user,
+                          size: 20,
+                          color: Colors.black54,
                         ),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        labelText: "Seller Name",
+                      ),
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.next,
+                    ),
+                    kSmallSpacing,
+
+                    //Company Name
+                    TextFormField(
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some data';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          FontAwesomeIcons.building,
+                          size: 20,
+                          color: Colors.black54,
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        labelText: "Company name",
+                      ),
+                      keyboardType: TextInputType.name,
+                      textInputAction: TextInputAction.done,
+                    ),
+                    kSmallSpacing,
+
+                    //Phone
+                    TextFormField(
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter Mobile number';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          FontAwesomeIcons.mobileAlt,
+                          color: Colors.black54,
+                          size: 20,
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        labelText: "Mobile",
+                      ),
+                      keyboardType: TextInputType.phone,
+                      textInputAction: TextInputAction.next,
+                    ),
+                    kSmallSpacing,
+
+                    //Address
+                    TextFormField(
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some data';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(
+                          FontAwesomeIcons.addressCard,
+                          size: 20,
+                          color: Colors.black54,
+                        ),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        labelText: "Address",
+                      ),
+                      keyboardType: TextInputType.streetAddress,
+                      textInputAction: TextInputAction.done,
+                    ),
+                    kSmallSpacing,
+
+                    //Button
+                    RaisedButton(
+                      onPressed: () => onRegisterClick(),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
+                      color: kPrimaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      child: const Text(
+                        "Update",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 22),
+                      ),
+                    ),
+
+                    //Validate Button
+                    FlatButton(
+                        onPressed: () {},
+                        child: const Text(
+                          "Verify Email",
+                          style: TextStyle(color: Colors.blue, fontSize: 15),
+                        ))
+                  ],
                 ),
               ),
-
-              //Edit Button
-              Positioned(
-                bottom: 0,
-                right: -10,
-                child: RaisedButton(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(16),
-                    shape: const CircleBorder(),
-                    onPressed: () {
-                      showModalBottomSheet(
-                          context: context,
-                          builder: (builder) => buildBottomOverlay());
-                    },
-                    child: const Icon(
-                      FontAwesomeIcons.camera,
-                      color: kPrimaryColor,
-                      size: 20,
-                    )),
-              )
-            ],
-          ),
-          kBigSpacing,
-
-          //Form
-          Container(
-            padding: const EdgeInsets.all(10),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  //Name
-                  TextFormField(
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter name';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        FontAwesomeIcons.user,
-                        size: 20,
-                        color: Colors.black54,
-                      ),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      labelText: "Seller Name",
-                    ),
-                    keyboardType: TextInputType.name,
-                    textInputAction: TextInputAction.next,
-                  ),
-                  kSmallSpacing,
-
-                  //Company Name
-                  TextFormField(
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter some data';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        FontAwesomeIcons.building,
-                        size: 20,
-                        color: Colors.black54,
-                      ),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      labelText: "Company name",
-                    ),
-                    keyboardType: TextInputType.name,
-                    textInputAction: TextInputAction.done,
-                  ),
-                  kSmallSpacing,
-
-                  //Phone
-                  TextFormField(
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter Mobile number';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        FontAwesomeIcons.mobileAlt,
-                        color: Colors.black54,
-                        size: 20,
-                      ),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      labelText: "Mobile",
-                    ),
-                    keyboardType: TextInputType.phone,
-                    textInputAction: TextInputAction.next,
-                  ),
-                  kSmallSpacing,
-
-                  //Address
-                  TextFormField(
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter some data';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(
-                        FontAwesomeIcons.addressCard,
-                        size: 20,
-                        color: Colors.black54,
-                      ),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      labelText: "Address",
-                    ),
-                    keyboardType: TextInputType.streetAddress,
-                    textInputAction: TextInputAction.done,
-                  ),
-                  kSmallSpacing,
-
-                  //Button
-                  RaisedButton(
-                    onPressed: () => onRegisterClick(),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 20),
-                    color: kPrimaryColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    child: const Text(
-                      "Update",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 22),
-                    ),
-                  ),
-
-                  //Validate Button
-                  FlatButton(
-                      onPressed: () {},
-                      child: const Text(
-                        "Verify Email",
-                        style: TextStyle(color: Colors.blue, fontSize: 15),
-                      ))
-                ],
-              ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

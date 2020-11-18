@@ -1,9 +1,9 @@
 import 'package:aqua_ly/Screens/Customer/customer_cart_screen.dart';
-import 'package:aqua_ly/Screens/Customer/customer_favourites_screen.dart';
 import 'package:aqua_ly/Screens/Customer/customer_profile_screen.dart';
 import 'package:aqua_ly/theme.dart';
 import 'package:fluid_bottom_nav_bar/fluid_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'customer_home_screen.dart';
 
@@ -18,12 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   int currentIndex = 0;
 
   //Add Pages here
-  List<Widget> pages = [
-    HomeScreen(),
-    ProfileScreen(),
-    FavouriteScreen(),
-    CartScreen()
-  ];
+  List<Widget> pages = [HomeScreen(), CartScreen(), ProfileScreen()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,10 +34,12 @@ class _MainScreenState extends State<MainScreen> {
           });
         },
         icons: [
-          FluidNavBarIcon(icon: Icons.home, extras: {'label': 'Home'}),
-          FluidNavBarIcon(icon: Icons.person, extras: {'label': 'Profile'}),
-          FluidNavBarIcon(icon: Icons.book, extras: {'label': 'Favourites'}),
-          FluidNavBarIcon(icon: Icons.category, extras: {'label': 'Cart'}),
+          FluidNavBarIcon(
+              icon: FontAwesomeIcons.home, extras: {'label': 'Home'}),
+          FluidNavBarIcon(
+              icon: FontAwesomeIcons.shoppingCart, extras: {'label': 'Cart'}),
+          FluidNavBarIcon(
+              icon: FontAwesomeIcons.user, extras: {'label': 'Profile'}),
         ],
       ),
     );
