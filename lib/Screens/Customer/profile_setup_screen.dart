@@ -23,6 +23,7 @@ class _CustomerProfileSetupScreenState
     extends State<CustomerProfileSetupScreen> {
   PickedFile _imageFile;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   final ImagePicker _picker = ImagePicker();
   static const kSmallSpacing = SizedBox(height: 10);
   static const kBigSpacing = SizedBox(height: 20);
@@ -32,6 +33,7 @@ class _CustomerProfileSetupScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _key,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -282,15 +284,19 @@ class _CustomerProfileSetupScreenState
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       final String uid = FirebaseAuth.instance.currentUser.uid;
-      final String fileName = p.basename(_imageFile.path);
+      final String fileName =
+          _imageFile == null ? 'default' : p.basename(_imageFile.path);
 
       //Uploading file
       try {
-        final Reference firebaseStorageRef =
-            FirebaseStorage.instance.ref().child('uploads/$uid/$fileName');
-        final uploadTask =
-            await firebaseStorageRef.putFile(File(_imageFile.path));
-        final String url = await uploadTask.ref.getDownloadURL();
+        String url = 'default';
+        if (fileName != 'default') {
+          final Reference firebaseStorageRef =
+              FirebaseStorage.instance.ref().child('uploads/$uid/$fileName');
+          final uploadTask =
+              await firebaseStorageRef.putFile(File(_imageFile.path));
+          url = await uploadTask.ref.getDownloadURL();
+        }
 
         await FirebaseFirestore.instance.collection('users').doc(uid).set({
           'name': name,
@@ -299,12 +305,13 @@ class _CustomerProfileSetupScreenState
           'profileImg': url
         });
 
+        await SharedPrefs.saveStr('name', name);
         await SharedPrefs.saveStr('current_screen', MainScreen.id);
         Navigator.popAndPushNamed(context, MainScreen.id);
       } catch (e) {
         // ignore: avoid_print
         print(e.toString());
-        Scaffold.of(context).showSnackBar(const SnackBar(
+        _key.currentState.showSnackBar(const SnackBar(
             content: Text('Unable to upload Profile image.'
                 ' Make sure you have a stable network connection '
                 'and try again')));

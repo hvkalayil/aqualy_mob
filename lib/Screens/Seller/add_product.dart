@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:aqua_ly/Api/api_handler.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -10,44 +10,55 @@ import 'package:path/path.dart' as p;
 
 import '../../theme.dart';
 
-class SellerProfileScreen extends StatefulWidget {
+class AddProductScreen extends StatefulWidget {
+  static String id = 'Add product Screen';
+
   @override
-  _SellerProfileScreenState createState() => _SellerProfileScreenState();
+  _AddProductScreenState createState() => _AddProductScreenState();
 }
 
-class _SellerProfileScreenState extends State<SellerProfileScreen> {
+class _AddProductScreenState extends State<AddProductScreen> {
   PickedFile _imageFile;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   final ImagePicker _picker = ImagePicker();
   static const kSmallSpacing = SizedBox(height: 10);
   static const kBigSpacing = SizedBox(height: 20);
-  String name, mobile, location, company;
+  String name, price, type = 'F';
+  bool upload = false;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>>(
-        future: getProfile(),
-        builder: (context, snapshot) {
-          ///1 -> Error
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text('Oops..There has been some error. Try Again Later'),
-            );
-          }
-
-          ///2 -> Success
-          else if (snapshot.hasData) {
-            final String image = snapshot.data['profileImg'] as String;
-            final String name = snapshot.data['name'] as String;
-            final String shopName = snapshot.data['shopName'] as String;
-            final String mobile = snapshot.data['mobile'] as String;
-            final String location = snapshot.data['location'] as String;
-
-            return Center(
-              child: SingleChildScrollView(
+    return Scaffold(
+      key: _key,
+      appBar: AppBar(),
+      body: upload
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text('Uploading files'),
+                  kSmallSpacing,
+                  CircularProgressIndicator()
+                ],
+              ),
+            )
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    //Heading 1
+                    kBigSpacing,
+                    const Text(
+                      "Add Product",
+                      style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 4,
+                          color: kPrimaryColor),
+                    ),
+
                     kBigSpacing,
                     //Profile Image & Edit Button
                     Stack(
@@ -56,24 +67,23 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
                         CircleAvatar(
                           backgroundColor: kPrimaryColor,
                           radius: 80,
-                          child: ClipOval(
-                            child: Container(
-                                height: 140,
-                                width: 140,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: _imageFile == null
-                                    ? Image.network(
-                                        image,
-                                        fit: BoxFit.fitWidth,
-                                        errorBuilder: (context, wid, s) =>
-                                            Image.asset(
-                                          kDefProfile,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      )
-                                    : Image.file(File(_imageFile.path))),
+                          child: Container(
+                            height: 140,
+                            decoration: _imageFile == null
+                                ? const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: AssetImage(kDefProfile),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: FileImage(File(_imageFile.path)),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                           ),
                         ),
 
@@ -109,7 +119,6 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
                           children: [
                             //Name
                             TextFormField(
-                              initialValue: name,
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return 'Please enter name';
@@ -118,117 +127,74 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
                               },
                               decoration: InputDecoration(
                                 prefixIcon: const Icon(
-                                  FontAwesomeIcons.user,
+                                  FontAwesomeIcons.tags,
                                   size: 20,
                                   color: Colors.black54,
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20)),
-                                labelText: "Seller Name",
+                                labelText: "Product Name",
                               ),
                               keyboardType: TextInputType.name,
                               textInputAction: TextInputAction.next,
+                              onSaved: (input) => name = input,
                             ),
                             kSmallSpacing,
 
-                            //Company Name
+                            //Price
                             TextFormField(
-                              initialValue: shopName,
                               validator: (value) {
                                 if (value.isEmpty) {
-                                  return 'Please enter some data';
+                                  return 'Please enter price';
                                 }
                                 return null;
                               },
                               decoration: InputDecoration(
                                 prefixIcon: const Icon(
-                                  FontAwesomeIcons.building,
-                                  size: 20,
-                                  color: Colors.black54,
-                                ),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                labelText: "Company name",
-                              ),
-                              keyboardType: TextInputType.name,
-                              textInputAction: TextInputAction.done,
-                              onSaved: (input) => company = input,
-                            ),
-                            kSmallSpacing,
-
-                            //Phone
-                            TextFormField(
-                              initialValue: mobile,
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter Mobile number';
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                prefixIcon: const Icon(
-                                  FontAwesomeIcons.mobileAlt,
+                                  FontAwesomeIcons.donate,
                                   color: Colors.black54,
                                   size: 20,
                                 ),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(20)),
-                                labelText: "Mobile",
+                                labelText: "Price",
                               ),
                               keyboardType: TextInputType.phone,
                               textInputAction: TextInputAction.next,
+                              onSaved: (input) => price = input,
                             ),
                             kSmallSpacing,
 
-                            //Address
-                            TextFormField(
-                              initialValue: location,
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter some data';
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                prefixIcon: const Icon(
-                                  FontAwesomeIcons.addressCard,
-                                  size: 20,
-                                  color: Colors.black54,
-                                ),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                labelText: "Address",
-                              ),
-                              keyboardType: TextInputType.streetAddress,
-                              textInputAction: TextInputAction.done,
-                            ),
+                            //Type
+
                             kSmallSpacing,
+                            DropdownButtonFormField(
+                                value: type,
+                                items: const [
+                                  DropdownMenuItem(
+                                      value: 'F', child: Text('Fish')),
+                                  DropdownMenuItem(
+                                      value: 'A', child: Text('Accessory'))
+                                ],
+                                onChanged: (input) => type = input as String),
+                            kBigSpacing,
 
                             //Button
                             RaisedButton(
-                              onPressed: () => onUpdateClick(image),
+                              onPressed: () async => onRegisterClick(),
                               padding: const EdgeInsets.symmetric(
                                   vertical: 10, horizontal: 20),
                               color: kPrimaryColor,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                               child: const Text(
-                                "Update",
+                                "Add Product",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 22),
                               ),
                             ),
-
-                            //Validate Button
-                            FlatButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  "Verify Email",
-                                  style: TextStyle(
-                                      color: Colors.blue, fontSize: 15),
-                                ))
                           ],
                         ),
                       ),
@@ -236,14 +202,8 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
                   ],
                 ),
               ),
-            );
-          }
-
-          ///3 -> Loading
-          else {
-            return kLoading;
-          }
-        });
+            ),
+    );
   }
 
   SizedBox buildBottomOverlay() {
@@ -312,35 +272,40 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
     );
   }
 
-  Future<void> onUpdateClick(String image) async {
+  Future<void> onRegisterClick() async {
     if (_formKey.currentState.validate()) {
+      _key.currentState.showSnackBar(const SnackBar(
+        content: Text('Admin will verify and add this product'),
+      ));
       _formKey.currentState.save();
-
+      setState(() {
+        upload = true;
+      });
       final String uid = FirebaseAuth.instance.currentUser.uid;
-      if (_imageFile != null) {
-        final String fileName = p.basename(_imageFile.path);
-        final Reference firebaseStorageRef =
-            FirebaseStorage.instance.ref().child('uploads/$uid/$fileName');
-        final uploadTask =
-            await firebaseStorageRef.putFile(File(_imageFile.path));
-        // ignore: parameter_assignments
-        image = await uploadTask.ref.getDownloadURL();
-      }
+      final String fileName =
+          _imageFile == null ? 'default' : p.basename(_imageFile.path);
 
-      await FirebaseFirestore.instance.collection('users').doc(uid).update({
-        'name': name,
-        'shopName': company,
-        'mobile': mobile,
-        'location': location,
-        'profileImg': image
+      //Uploading file
+      try {
+        String url = 'default';
+        if (fileName != 'default') {
+          final Reference firebaseStorageRef =
+              FirebaseStorage.instance.ref().child('uploads/$uid/$fileName');
+          final uploadTask =
+              await firebaseStorageRef.putFile(File(_imageFile.path));
+          url = await uploadTask.ref.getDownloadURL();
+        }
+
+        await APIHandler.addProduct(
+            name: name, price: int.parse(price), type: type, link: url);
+
+        Navigator.pop(context);
+      } catch (e) {
+        _key.currentState.showSnackBar(errorSnack(e.toString()));
+      }
+      setState(() {
+        upload = false;
       });
     }
-  }
-
-  Future<Map<String, dynamic>> getProfile() async {
-    final String uid = FirebaseAuth.instance.currentUser.uid;
-    final s =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
-    return s.data();
   }
 }

@@ -34,7 +34,24 @@ class _SellerMainScreenState extends State<SellerMainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Hi, Seller'),
+        title: FutureBuilder<String>(
+            future: SharedPrefs.getSavedStr('name'),
+            builder: (context, snapshot) {
+              // 1 -> Error
+              if (snapshot.hasError) {
+                return const Text('Hi, Seller');
+              }
+
+              // 2 -> Success
+              else if (snapshot.hasData) {
+                return Text('Hi, ${snapshot.data}');
+              }
+
+              // 3 -> Loading
+              else {
+                return kLoading;
+              }
+            }),
         actions: [
           FlatButton.icon(
               onPressed: () async {

@@ -1,3 +1,5 @@
+import 'package:aqua_ly/Api/api_handler.dart';
+import 'package:aqua_ly/Screens/Seller/add_product.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -30,7 +32,8 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
                 style: TextStyle(fontSize: 24, color: Colors.white),
               ),
               FlatButton(
-                onPressed: () {},
+                onPressed: () =>
+                    Navigator.of(context).pushNamed(AddProductScreen.id),
                 color: Colors.white,
                 shape: const CircleBorder(),
                 child: const Icon(
@@ -44,20 +47,31 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
 
         //List
         Expanded(
-          child: ListView(
-            children: [
-              makeFish(
-                  image: 'fish1.png',
-                  name: 'HALFMOON BETTA',
-                  price: '200',
-                  status: true),
-              makeFish(
-                  image: 'fish2.png',
-                  name: 'GOLD FISH',
-                  price: '50',
-                  status: false),
-            ],
-          ),
+          child: FutureBuilder<List<Map<String, dynamic>>>(
+              future: APIHandler.productsAddedBy(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return kError(snapshot.error.toString());
+                } else if (snapshot.hasData) {
+                  final List<Map<String, dynamic>> data = snapshot.data;
+                  if (data.isEmpty) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [Text("You have'nt added any products")],
+                    );
+                  } else {
+                    return ListView(
+                      children: data
+                          .asMap()
+                          .entries
+                          .map((e) => makeFish(data: e.value))
+                          .toList(),
+                    );
+                  }
+                } else {
+                  return kLoading;
+                }
+              }),
         )
       ],
     );
@@ -65,7 +79,11 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
 
   bool isLove = false;
 
-  Container makeFish({String image, String name, String price, bool status}) {
+  Container makeFish({Map<String, dynamic> data}) {
+    final String name = data['name'] as String;
+    final int price = data['price'] as int;
+    final bool status = data['verified'] as bool;
+    final String image = data['image'] as String ?? '';
     return Container(
       height: 100,
       margin: const EdgeInsets.all(10),
@@ -79,11 +97,16 @@ class _SellerProductScreenState extends State<SellerProductScreen> {
           Container(
             width: 100,
             height: 100,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
-                image: DecorationImage(
-                    image: AssetImage('assets/graphics/$image'))),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: Image.network(
+              image,
+              loadingBuilder: (context, widget, event) =>
+                  const CircularProgressIndicator(),
+              errorBuilder: (context, widget, event) => Image.asset(kDefImg),
+            ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,

@@ -1,5 +1,17 @@
 //Base Url
-const String kBaseUrl = 'http://192.168.1.8:8000/';
+const String kBaseUrl = 'https://aqualy.herokuapp.com/';
 
-//USER
-const String kGetShopId = 'shop/';
+//User
+const String kUsers = 'users/';
+
+//Shop
+const String kShop = 'shop/';
+
+//Cart
+const String kCart = 'cart/';
+
+//Product
+const String kProduct = 'product/';
+
+//Listing
+const String kListing = 'listing/';

@@ -1,3 +1,7 @@
+import 'package:aqua_ly/Screens/Seller/add_listing.dart';
+import 'package:aqua_ly/Screens/Seller/add_product.dart';
+import 'package:aqua_ly/Screens/Seller/edit_listing.dart';
+import 'package:aqua_ly/Screens/Seller/seller_all_order_screen.dart';
 import 'package:aqua_ly/test.dart';
 import 'package:flutter/material.dart';
 
@@ -25,4 +29,8 @@ final Map<String, Widget Function(BuildContext)> routes = {
   //Seller Routes
   SellerProfileSetupScreen.id: (_) => SellerProfileSetupScreen(),
   SellerMainScreen.id: (_) => SellerMainScreen(),
+  AddProductScreen.id: (_) => AddProductScreen(),
+  AddListingScreen.id: (_) => AddListingScreen(),
+  EditListingScreen.id: (_) => const EditListingScreen(),
+  SellerAllOrdersScreen.id: (_) => SellerAllOrdersScreen(),
 };

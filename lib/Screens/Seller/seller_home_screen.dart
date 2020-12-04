@@ -1,3 +1,5 @@
+import 'package:aqua_ly/Api/api_handler.dart';
+import 'package:aqua_ly/Screens/Seller/add_listing.dart';
 import 'package:aqua_ly/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,11 +34,31 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                     'Total Revenue',
                     style: TextStyle(color: Colors.white, fontSize: 28),
                   ),
-                  const Text(
-                    '₹ 15,000',
-                    style: TextStyle(
-                        color: Colors.white, fontSize: 38, letterSpacing: 2),
-                  ),
+                  FutureBuilder<String>(
+                      future: APIHandler.getShopRevenue(),
+                      builder: (context, snapshot) {
+                        ///1 -> Error
+                        if (snapshot.hasError) {
+                          return Text('Oops..${snapshot.error.toString()}');
+                        }
+
+                        ///2 -> Success
+                        else if (snapshot.hasData) {
+                          final String rev = snapshot.data;
+                          return Text(
+                            '₹ $rev',
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 38,
+                                letterSpacing: 2),
+                          );
+                        }
+
+                        ///3 -> Loading
+                        else {
+                          return kLoading;
+                        }
+                      }),
                   const Divider(
                     color: Colors.white,
                     thickness: 2,
@@ -51,15 +73,28 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                 color: Colors.white.withOpacity(0.75),
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(20))),
-                            child: const SizedBox(
+                            child: SizedBox(
                               height: 80,
                               width: 80,
                               child: Center(
-                                child: Text(
-                                  '10',
-                                  style: TextStyle(
-                                      fontSize: 24, color: Colors.white),
-                                ),
+                                child: FutureBuilder<String>(
+                                    future: APIHandler.getNumOrders(),
+                                    builder: (context, snapshot) {
+                                      String msg = '';
+                                      if (snapshot.hasError) {
+                                        msg = snapshot.error.toString();
+                                      } else if (snapshot.hasData) {
+                                        msg = snapshot.data;
+                                      } else {
+                                        msg = '⏳';
+                                      }
+
+                                      return Text(
+                                        msg,
+                                        style: const TextStyle(
+                                            fontSize: 24, color: Colors.white),
+                                      );
+                                    }),
                               ),
                             ),
                           ),
@@ -123,7 +158,8 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                           style: TextStyle(fontSize: 24, color: Colors.white),
                         ),
                         FlatButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.of(context)
+                              .pushNamed(AddListingScreen.id),
                           color: Colors.white,
                           shape: const CircleBorder(),
                           child: const Icon(
@@ -138,19 +174,40 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: 200,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        makeFish(
-                            image: 'fish1.png',
-                            name: 'HALFMOON BETTA',
-                            price: '50'),
-                        makeFish(
-                            image: 'fish2.png',
-                            name: 'GOLD FISH',
-                            price: '100'),
-                      ],
-                    ),
+                    child: FutureBuilder<List<Map<String, dynamic>>>(
+                        future: APIHandler.getListings(),
+                        builder: (context, snapshot) {
+                          //1 -> Error
+                          if (snapshot.hasError) {
+                            return kError(snapshot.error.toString());
+
+                            // 2 -> Success
+                          } else if (snapshot.hasData) {
+                            if (snapshot.data.isEmpty) {
+                              return kError("You have'nt added any listings",
+                                  style: const TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w900,
+                                      color: Colors.white));
+                            } else {
+                              final List<Map<String, dynamic>> data =
+                                  snapshot.data;
+                              return ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: data
+                                    .asMap()
+                                    .entries
+                                    .map((e) => makeFish(e.value))
+                                    .toList(),
+                              );
+                            }
+                          }
+
+                          // 3 -> Loading
+                          else {
+                            return kLoading;
+                          }
+                        }),
                   )
                 ],
               ),
@@ -163,7 +220,10 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
 
   bool isLove = false;
 
-  Container makeFish({String image, String name, String price}) {
+  Container makeFish(Map<String, dynamic> data) {
+    final String image = data['image'] as String;
+    final String name = data['name'] as String;
+    final int price = data['price'] as int;
     return Container(
       margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
       width: 200,
@@ -174,9 +234,10 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
         children: [
           Container(
             transform: Matrix4.translationValues(40, -20, 0),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/graphics/$image'))),
+            child: Image.network(
+              image,
+              errorBuilder: (context, widget, err) => Image.asset(kDefImg),
+            ),
           ),
           Positioned(
             top: 10,
