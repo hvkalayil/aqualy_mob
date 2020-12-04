@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 ///Keys
-///current_screen index
+///current_screen index shopId
 class SharedPrefs {
   static Future<int> getSavedNum(String key) async =>
       SharedPreferences.getInstance().then((prefs) => prefs.getInt(key));

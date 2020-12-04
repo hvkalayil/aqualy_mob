@@ -1,3 +1,4 @@
+import 'package:aqua_ly/Api/api_handler.dart';
 import 'package:aqua_ly/Screens/Customer/profile_setup_screen.dart';
 import 'package:aqua_ly/Screens/Seller/seller_profile_setup_screen.dart';
 import 'package:aqua_ly/theme.dart';
@@ -223,6 +224,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             .createUserWithEmailAndPassword(email: email, password: pass);
         final String uid = credential.user.uid;
 
+        await APIHandler.saveUid(uid);
+
         final String newRoute = isSeller
             ? SellerProfileSetupScreen.id
             : CustomerProfileSetupScreen.id;
@@ -247,8 +250,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       //Other Unknown Errors
       catch (e) {
-        Scaffold.of(context).showSnackBar(
-            const SnackBar(content: Text('Unknown Error occured')));
+        Scaffold.of(context).showSnackBar(errorSnack(e.toString()));
       }
 
       setState(() {

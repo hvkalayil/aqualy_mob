@@ -198,9 +198,15 @@ class _LoginScreenState extends State<LoginScreen> {
         if (_doc.exists) {
           final _data = _doc.data();
           final String _type = _data['user_type'].toString();
+          if (_type == 'Seller') {
+            final int shopId = _data['shopId'] as int;
+            SharedPrefs.saveNum('shopId', shopId);
+          }
           final newRoute =
               _type == 'Seller' ? SellerMainScreen.id : MainScreen.id;
+          final String userName = _data['name'] as String;
 
+          await SharedPrefs.saveStr('name', userName);
           await SharedPrefs.saveStr('current_screen', newRoute);
           Navigator.of(context)
               .pushNamedAndRemoveUntil(newRoute, (route) => false);
