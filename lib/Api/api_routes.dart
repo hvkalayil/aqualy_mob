@@ -15,3 +15,6 @@ const String kProduct = 'product/';
 
 //Listing
 const String kListing = 'listing/';
+
+//Rating
+const String kRating = 'rating/';

@@ -1,4 +1,5 @@
 import 'package:aqua_ly/Api/api_handler.dart';
+import 'package:aqua_ly/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme.dart';
@@ -51,7 +52,6 @@ class _SellerAllOrdersScreenState extends State<SellerAllOrdersScreen> {
   }
 
   Container makeFish(Map<String, dynamic> data) {
-    final bool isActive = data['isActive'] as bool;
     final String user = data['userName'] as String;
     final String image = data['image'] as String;
     final String name = data['name'] as String;
@@ -59,14 +59,14 @@ class _SellerAllOrdersScreenState extends State<SellerAllOrdersScreen> {
     final int discount = data['discount'] as int;
     final int finalPrice = price - (price ~/ discount);
     final String location = data['location'] as String;
-    final String status = isActive ? 'Deliver' : 'Delivered';
+    final String status = data['status'] as String;
 
     return Container(
       height: 120,
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-          color: isActive ? kPrimaryColor : Colors.green,
+          color: status == kOut ? kPrimaryColor : Colors.green,
           borderRadius: const BorderRadius.all(Radius.circular(20))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

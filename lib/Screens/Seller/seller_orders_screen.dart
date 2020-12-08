@@ -83,13 +83,13 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
 
   GestureDetector makeFish(Map<String, dynamic> data) {
     final int cartId = data['cartId'] as int;
-    final int userId = data['userId'] as int;
     final int listingId = data['listingId'] as int;
     final String user = data['userName'] as String;
     final String image = data['image'] as String;
     final String name = data['name'] as String;
     final int price = data['price'] as int;
     final int discount = data['discount'] as int;
+    final int stock = data['stock'] as int;
     final int finalPrice = price - (price ~/ discount);
     final String location = data['location'] as String;
 
@@ -106,7 +106,10 @@ class _SellerOrdersScreenState extends State<SellerOrdersScreen> {
                   onPressed: () {
                     try {
                       APIHandler.markDelivered(
-                          cart: cartId, user: userId, listing: listingId);
+                          cart: cartId,
+                          price: finalPrice,
+                          listingId: listingId,
+                          stock: stock);
                     } catch (e) {
                       Scaffold.of(context)
                           .showSnackBar(errorSnack(e.toString()));

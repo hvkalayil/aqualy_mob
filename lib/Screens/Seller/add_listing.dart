@@ -52,7 +52,7 @@ class _AddListingScreenState extends State<AddListingScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
-            Text('Uploading files'),
+            Text('Adding new Listing'),
             kSmallSpacing,
             CircularProgressIndicator()
           ],
@@ -401,16 +401,23 @@ class _AddListingScreenState extends State<AddListingScreen> {
   int chosenId = -1;
   FutureBuilder<List<Map<String, dynamic>>> showProducts() =>
       FutureBuilder<List<Map<String, dynamic>>>(
-          future: APIHandler.getAllProducts(),
+          future: APIHandler.getAllProductsForShopUser(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return kError(snapshot.error.toString());
             } else if (snapshot.hasData) {
               final List<Map<String, dynamic>> data = snapshot.data;
               if (data.isEmpty) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [Text("No products to add a listing...")],
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        "No more products to add listing",
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
                 );
               } else {
                 return AnimationLimiter(
@@ -539,6 +546,7 @@ class _AddListingScreenState extends State<AddListingScreen> {
         showSizeError = false;
         upload = true;
       });
+      _formKey.currentState.save();
 
       //Validation done adding data Setting up data
       final String colors = createString(selectedColors);
@@ -546,17 +554,17 @@ class _AddListingScreenState extends State<AddListingScreen> {
       try {
         await APIHandler.addListing(
             colors: colors,
-            stock: int.parse(stock),
-            discount: int.parse(discount),
+            stock: stock,
+            discount: discount,
             sizes: sizes,
             productId: chosenId);
-        setState(() {
-          upload = false;
-        });
         Navigator.of(context).pop();
       } catch (e) {
         _key.currentState.showSnackBar(errorSnack(e.toString()));
       }
+      setState(() {
+        upload = false;
+      });
     }
   }
 }

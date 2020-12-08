@@ -97,7 +97,7 @@ class _SellerListingScreenState extends State<SellerListingScreen> {
     final String color = data['color'] as String;
     final String size = data['size'] as String;
 
-    final int finalPrice = price - (price ~/ discount);
+    final int finalPrice = price - (price * discount) ~/ 100;
     final List<int> listOfColors = parseIntFromString(color);
     final List<int> listOfSizes = parseIntFromString(size);
 

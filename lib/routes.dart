@@ -2,10 +2,8 @@ import 'package:aqua_ly/Screens/Seller/add_listing.dart';
 import 'package:aqua_ly/Screens/Seller/add_product.dart';
 import 'package:aqua_ly/Screens/Seller/edit_listing.dart';
 import 'package:aqua_ly/Screens/Seller/seller_all_order_screen.dart';
-import 'package:aqua_ly/test.dart';
 import 'package:flutter/material.dart';
 
-import 'Screens/Customer/fish_info_screen.dart';
 import 'Screens/Customer/main_screen.dart';
 import 'Screens/Customer/profile_setup_screen.dart';
 import 'Screens/Seller/seller_main_screen.dart';
@@ -15,10 +13,7 @@ import 'Screens/register_screen.dart';
 import 'Screens/splash_screen.dart';
 
 final Map<String, Widget Function(BuildContext)> routes = {
-  //Common Routes
-  TestScreen.id: (_) => TestScreen(),
   SplashScreen.id: (_) => SplashScreen(),
-  FishInfoScreen.id: (_) => const FishInfoScreen(),
   LoginScreen.id: (_) => const LoginScreen(),
   RegisterScreen.id: (_) => RegisterScreen(),
 
