@@ -2,6 +2,7 @@ import 'package:aqua_ly/Screens/Customer/main_screen.dart';
 import 'package:aqua_ly/Screens/Seller/seller_main_screen.dart';
 import 'package:aqua_ly/Screens/register_screen.dart';
 import 'package:aqua_ly/shared_prefs.dart';
+import 'package:aqua_ly/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +127,87 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   //Forgot Password
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      String forgotMail = '';
+                      String errorMsg = '';
+                      bool showError = false;
+                      showDialog<void>(
+                        context: context,
+                        builder: (BuildContext dialogContext) {
+                          return StatefulBuilder(
+                            builder: (context, setState) => AlertDialog(
+                              title: const Text('Forgot Password?'),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        labelText: "Email",
+                                        prefixIcon: const Icon(
+                                          FontAwesomeIcons.solidEnvelope,
+                                          color: Colors.black54,
+                                        )),
+                                    onChanged: (input) => forgotMail = input,
+                                    keyboardType: TextInputType.emailAddress,
+                                    textInputAction: TextInputAction.done,
+                                  ),
+                                  if (showError)
+                                    Text(
+                                      errorMsg,
+                                      style: const TextStyle(
+                                          fontSize: 14, color: Colors.red),
+                                    )
+                                  else
+                                    const SizedBox()
+                                ],
+                              ),
+                              actions: <Widget>[
+                                FlatButton(
+                                  onPressed: () async {
+                                    if (forgotMail.isEmpty ||
+                                        !EmailValidator.validate(forgotMail)) {
+                                      setState(() {
+                                        showError = true;
+                                        errorMsg = 'Enter a valid Email';
+                                      });
+                                      return;
+                                    }
+                                    setState(() {
+                                      showError = false;
+                                    });
+                                    try {
+                                      await FirebaseAuth.instance
+                                          .sendPasswordResetEmail(
+                                              email: forgotMail);
+                                      Navigator.pop(context);
+                                      _scaffoldKey.currentState
+                                          .showSnackBar(const SnackBar(
+                                        content: Text(
+                                            'A password reset email has been sent to this mail address'),
+                                        backgroundColor: Colors.green,
+                                      ));
+                                    } catch (e) {
+                                      _scaffoldKey.currentState.showSnackBar(
+                                          errorSnack(e.toString()));
+                                    }
+                                  },
+                                  child: const Text('Reset Password'),
+                                ),
+                                FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
                     child: const Text(
                       "Forgot Password?",
                       textAlign: TextAlign.right,

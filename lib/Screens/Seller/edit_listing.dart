@@ -46,6 +46,7 @@ class _EditListingScreenState extends State<EditListingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _key,
+      appBar: AppBar(),
       body: SafeArea(
         child: upload
             ? showLoading()
@@ -316,7 +317,7 @@ class _EditListingScreenState extends State<EditListingScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
-            Text('Uploading files'),
+            Text('Updating the Listing'),
             kSmallSpacing,
             CircularProgressIndicator()
           ],
@@ -406,6 +407,7 @@ class _EditListingScreenState extends State<EditListingScreen> {
         upload = true;
       });
 
+      _formKey.currentState.save();
       final String color = createString(selectedColors);
       final String size = createString(selectedSizes);
       try {
@@ -414,15 +416,15 @@ class _EditListingScreenState extends State<EditListingScreen> {
             listingId: widget.data['id'] as int,
             colors: color,
             sizes: size,
-            discount: int.parse(discount),
-            stock: int.parse(stock));
-        setState(() {
-          upload = false;
-        });
+            discount: discount,
+            stock: stock);
         Navigator.pop(context);
       } catch (e) {
         _key.currentState.showSnackBar(errorSnack(e.toString()));
       }
+      setState(() {
+        upload = false;
+      });
     }
   }
 }

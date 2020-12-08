@@ -1,4 +1,5 @@
 import 'package:aqua_ly/Screens/Customer/customer_cart_screen.dart';
+import 'package:aqua_ly/Screens/Customer/customer_history_screen.dart';
 import 'package:aqua_ly/Screens/Customer/customer_profile_screen.dart';
 import 'package:aqua_ly/theme.dart';
 import 'package:fluid_bottom_nav_bar/fluid_bottom_nav_bar.dart';
@@ -18,7 +19,12 @@ class _MainScreenState extends State<MainScreen> {
   int currentIndex = 0;
 
   //Add Pages here
-  List<Widget> pages = [HomeScreen(), CartScreen(), ProfileScreen()];
+  List<Widget> pages = [
+    HomeScreen(),
+    CartScreen(),
+    HistoryScreen(),
+    ProfileScreen()
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +44,8 @@ class _MainScreenState extends State<MainScreen> {
               icon: FontAwesomeIcons.home, extras: {'label': 'Home'}),
           FluidNavBarIcon(
               icon: FontAwesomeIcons.shoppingCart, extras: {'label': 'Cart'}),
+          FluidNavBarIcon(
+              icon: FontAwesomeIcons.history, extras: {'label': 'History'}),
           FluidNavBarIcon(
               icon: FontAwesomeIcons.user, extras: {'label': 'Profile'}),
         ],

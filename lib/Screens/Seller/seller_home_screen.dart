@@ -80,20 +80,26 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                 child: FutureBuilder<String>(
                                     future: APIHandler.getNumOrders(),
                                     builder: (context, snapshot) {
-                                      String msg = '';
+                                      // 1 -> Error
                                       if (snapshot.hasError) {
-                                        msg = snapshot.error.toString();
-                                      } else if (snapshot.hasData) {
-                                        msg = snapshot.data;
-                                      } else {
-                                        msg = '⏳';
+                                        return kError(
+                                            snapshot.error.toString());
                                       }
 
-                                      return Text(
-                                        msg,
-                                        style: const TextStyle(
-                                            fontSize: 24, color: Colors.white),
-                                      );
+                                      // 2 -> Success
+                                      else if (snapshot.hasData) {
+                                        return Text(
+                                          snapshot.data,
+                                          style: const TextStyle(
+                                              fontSize: 24,
+                                              color: Colors.white),
+                                        );
+                                      }
+
+                                      // 3 -> Loading
+                                      else {
+                                        return kLoading;
+                                      }
                                     }),
                               ),
                             ),
@@ -114,15 +120,37 @@ class _SellerHomeScreenState extends State<SellerHomeScreen> {
                                 color: Colors.white.withOpacity(0.75),
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(20))),
-                            child: const SizedBox(
+                            child: SizedBox(
                               height: 80,
                               width: 80,
                               child: Center(
-                                child: Text(
-                                  '4.8',
-                                  style: TextStyle(
-                                      fontSize: 24, color: Colors.white),
-                                ),
+                                child: FutureBuilder<double>(
+                                    future: APIHandler.getShopRating(),
+                                    builder: (context, snapshot) {
+                                      // 1 -> Error
+                                      if (snapshot.hasError) {
+                                        return kError(
+                                            snapshot.error.toString());
+                                      }
+
+                                      // 2 -> Success
+                                      else if (snapshot.hasData) {
+                                        final String msg = snapshot.data == 0
+                                            ? '⛔'
+                                            : snapshot.data.toString();
+                                        return Text(
+                                          msg,
+                                          style: const TextStyle(
+                                              fontSize: 24,
+                                              color: Colors.white),
+                                        );
+                                      }
+
+                                      // 3 -> Loading
+                                      else {
+                                        return kLoading;
+                                      }
+                                    }),
                               ),
                             ),
                           ),

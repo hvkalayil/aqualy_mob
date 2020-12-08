@@ -144,8 +144,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             //Price
                             TextFormField(
                               validator: (value) {
+                                final regex = RegExp(r'^-?[0-9]+$');
                                 if (value.isEmpty) {
                                   return 'Please enter price';
+                                } else if (!regex.hasMatch(value)) {
+                                  return 'Enter a numerical value';
                                 }
                                 return null;
                               },
@@ -159,7 +162,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                     borderRadius: BorderRadius.circular(20)),
                                 labelText: "Price",
                               ),
-                              keyboardType: TextInputType.phone,
+                              keyboardType: TextInputType.number,
                               textInputAction: TextInputAction.next,
                               onSaved: (input) => price = input,
                             ),
@@ -297,7 +300,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         }
 
         await APIHandler.addProduct(
-            name: name, price: int.parse(price), type: type, link: url);
+            name: name, price: price, type: type, link: url);
 
         Navigator.pop(context);
       } catch (e) {
