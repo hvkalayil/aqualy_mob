@@ -55,7 +55,8 @@ class APIHandler {
   //Save Shop Details
   static Future<void> saveShopDetails(String name) async {
     final String url = kBaseUrl + kShop;
-    final response = await http.post(url, body: {'name': name, 'revenue': 0});
+    final response =
+        await http.post(url, body: {'name': name, 'revenue': 0.toString()});
 
     if (response.statusCode < 200 || response.statusCode > 400) {
       throw 'Error - Could not save shop details';

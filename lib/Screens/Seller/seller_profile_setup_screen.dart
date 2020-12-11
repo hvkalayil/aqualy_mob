@@ -165,7 +165,7 @@ class _SellerProfileSetupScreenState extends State<SellerProfileSetupScreen> {
                               labelText: "Company name",
                             ),
                             keyboardType: TextInputType.name,
-                            textInputAction: TextInputAction.done,
+                            textInputAction: TextInputAction.next,
                             onSaved: (input) => company = input,
                           ),
                           kSmallSpacing,
@@ -354,7 +354,7 @@ class _SellerProfileSetupScreenState extends State<SellerProfileSetupScreen> {
         await SharedPrefs.saveStr('current_screen', SellerMainScreen.id);
         Navigator.popAndPushNamed(context, SellerMainScreen.id);
       } catch (e) {
-        Scaffold.of(context)
+        _key.currentState
             .showSnackBar(errorSnack('Unable to upload Profile image.'
                 ' Make sure you have a stable network connection '
                 'and try again'));
