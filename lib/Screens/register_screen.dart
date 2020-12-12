@@ -141,11 +141,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             )),
                         keyboardType: TextInputType.visiblePassword,
                         textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (input) {
-                          pass = input;
-                          FocusScope.of(context).nextFocus();
-                        },
-                        onSaved: (input) => pass = input,
+                        onChanged: (input) => pass = input,
                       ),
                       const SizedBox(height: 20),
 
