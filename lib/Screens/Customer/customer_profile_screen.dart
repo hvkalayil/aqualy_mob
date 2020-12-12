@@ -23,225 +23,239 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final ImagePicker _picker = ImagePicker();
   static const kSmallSpacing = SizedBox(height: 10);
   static const kBigSpacing = SizedBox(height: 20);
-  String name, mobile, location;
+  String name, mobile, location, image;
+  bool isUploading = false;
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>>(
-        future: getProfile(),
-        builder: (context, snapshot) {
-          ///1 -> Error
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text('Oops..There has been some error. Try Again Later'),
-            );
-          }
+    return isUploading
+        ? kLoading
+        : FutureBuilder<Map<String, dynamic>>(
+            future: getProfile(),
+            builder: (context, snapshot) {
+              ///1 -> Error
+              if (snapshot.hasError) {
+                return const Center(
+                  child:
+                      Text('Oops..There has been some error. Try Again Later'),
+                );
+              }
 
-          ///2 -> Success
-          else if (snapshot.hasData) {
-            final String image = snapshot.data['profileImg'] as String;
-            final String name = snapshot.data['name'] as String;
-            final String mobile = snapshot.data['mobile'] as String;
-            final String location = snapshot.data['location'] as String;
+              ///2 -> Success
+              else if (snapshot.hasData) {
+                image = snapshot.data['profileImg'] as String;
+                name = snapshot.data['name'] as String;
+                mobile = snapshot.data['mobile'] as String;
+                location = snapshot.data['location'] as String;
 
-            return Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    kBigSpacing,
-                    //Profile Image & Edit Button
-                    Stack(
+                return Center(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        //Profile Image
-                        CircleAvatar(
-                          backgroundColor: kPrimaryColor,
-                          radius: 80,
-                          child: ClipOval(
-                            child: Container(
-                                height: 140,
-                                width: 140,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                ),
-                                child: _imageFile == null
-                                    ? Image.network(
-                                        image,
-                                        fit: BoxFit.fitWidth,
-                                        errorBuilder: (context, wid, s) =>
-                                            Image.asset(
-                                          kDefProfile,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      )
-                                    : Image.file(File(_imageFile.path))),
-                          ),
-                        ),
-
-                        //Edit Button
-                        Positioned(
-                          bottom: 0,
-                          right: -10,
-                          child: RaisedButton(
-                              color: Colors.white,
-                              padding: const EdgeInsets.all(16),
-                              shape: const CircleBorder(),
-                              onPressed: () {
-                                showModalBottomSheet(
-                                    context: context,
-                                    builder: (builder) => buildBottomOverlay());
-                              },
-                              child: const Icon(
-                                FontAwesomeIcons.camera,
-                                color: kPrimaryColor,
-                                size: 20,
-                              )),
-                        )
-                      ],
-                    ),
-                    kBigSpacing,
-
-                    //Form
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
+                        kBigSpacing,
+                        //Profile Image & Edit Button
+                        Stack(
                           children: [
-                            //Name
-                            TextFormField(
-                              initialValue: name,
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter name';
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                prefixIcon: const Icon(
-                                  FontAwesomeIcons.user,
-                                  size: 20,
-                                  color: Colors.black54,
-                                ),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                labelText: "Seller Name",
-                              ),
-                              keyboardType: TextInputType.name,
-                              textInputAction: TextInputAction.next,
-                            ),
-                            kSmallSpacing,
-
-                            //Phone
-                            TextFormField(
-                              initialValue: mobile,
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter Mobile number';
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                prefixIcon: const Icon(
-                                  FontAwesomeIcons.mobileAlt,
-                                  color: Colors.black54,
-                                  size: 20,
-                                ),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                labelText: "Mobile",
-                              ),
-                              keyboardType: TextInputType.phone,
-                              textInputAction: TextInputAction.next,
-                            ),
-                            kSmallSpacing,
-
-                            //Address
-                            TextFormField(
-                              initialValue: location,
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter some data';
-                                }
-                                return null;
-                              },
-                              decoration: InputDecoration(
-                                prefixIcon: const Icon(
-                                  FontAwesomeIcons.addressCard,
-                                  size: 20,
-                                  color: Colors.black54,
-                                ),
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                labelText: "Address",
-                              ),
-                              keyboardType: TextInputType.streetAddress,
-                              textInputAction: TextInputAction.done,
-                            ),
-                            kSmallSpacing,
-
-                            //Button
-                            RaisedButton(
-                              onPressed: () => onUpdateClick(image),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 20),
-                              color: kPrimaryColor,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: const Text(
-                                "Update",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 22),
+                            //Profile Image
+                            CircleAvatar(
+                              backgroundColor: kPrimaryColor,
+                              radius: 80,
+                              child: ClipOval(
+                                child: Container(
+                                    height: 140,
+                                    width: 140,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: _imageFile == null
+                                        ? Image.network(
+                                            image,
+                                            fit: BoxFit.fitWidth,
+                                            errorBuilder: (context, wid, s) =>
+                                                Image.asset(
+                                              kDefProfile,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )
+                                        : Image.file(File(_imageFile.path))),
                               ),
                             ),
 
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
+                            //Edit Button
+                            Positioned(
+                              bottom: 0,
+                              right: -10,
                               child: RaisedButton(
-                                  onPressed: () async {
-                                    await FirebaseAuth.instance.signOut();
-                                    Navigator.pushNamedAndRemoveUntil(context,
-                                        LoginScreen.id, (route) => false);
-                                    SharedPrefs.clearAll();
+                                  color: Colors.white,
+                                  padding: const EdgeInsets.all(16),
+                                  shape: const CircleBorder(),
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                        context: context,
+                                        builder: (builder) =>
+                                            buildBottomOverlay());
                                   },
+                                  child: const Icon(
+                                    FontAwesomeIcons.camera,
+                                    color: kPrimaryColor,
+                                    size: 20,
+                                  )),
+                            )
+                          ],
+                        ),
+                        kBigSpacing,
+
+                        //Form
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                //Name
+                                TextFormField(
+                                  initialValue: name,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Please enter name';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    prefixIcon: const Icon(
+                                      FontAwesomeIcons.user,
+                                      size: 20,
+                                      color: Colors.black54,
+                                    ),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    labelText: "Seller Name",
+                                  ),
+                                  keyboardType: TextInputType.name,
+                                  textInputAction: TextInputAction.next,
+                                  onSaved: (input) => name = input,
+                                ),
+                                kSmallSpacing,
+
+                                //Phone
+                                TextFormField(
+                                  initialValue: mobile,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Please enter Mobile number';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    prefixIcon: const Icon(
+                                      FontAwesomeIcons.mobileAlt,
+                                      color: Colors.black54,
+                                      size: 20,
+                                    ),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    labelText: "Mobile",
+                                  ),
+                                  keyboardType: TextInputType.phone,
+                                  textInputAction: TextInputAction.next,
+                                  onSaved: (input) => mobile = input,
+                                ),
+                                kSmallSpacing,
+
+                                //Address
+                                TextFormField(
+                                  initialValue: location,
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Please enter some data';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    prefixIcon: const Icon(
+                                      FontAwesomeIcons.addressCard,
+                                      size: 20,
+                                      color: Colors.black54,
+                                    ),
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    labelText: "Address",
+                                  ),
+                                  keyboardType: TextInputType.streetAddress,
+                                  textInputAction: TextInputAction.done,
+                                  onSaved: (input) => location = input,
+                                ),
+                                kSmallSpacing,
+
+                                //Button
+                                RaisedButton(
+                                  onPressed: () => onUpdateClick(image),
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 20),
                                   color: kPrimaryColor,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(10)),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: const [
-                                      Icon(
-                                        FontAwesomeIcons.signOutAlt,
+                                  child: const Text(
+                                    "Update",
+                                    style: TextStyle(
                                         color: Colors.white,
-                                      ),
-                                      Text(
-                                        'Log Out',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w900),
-                                      )
-                                    ],
-                                  )),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            );
-          }
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 22),
+                                  ),
+                                ),
 
-          ///3 -> Loading
-          else {
-            return kLoading;
-          }
-        });
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: RaisedButton(
+                                      onPressed: () async {
+                                        await FirebaseAuth.instance.signOut();
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            LoginScreen.id,
+                                            (route) => false);
+                                        SharedPrefs.clearAll();
+                                      },
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 20),
+                                      color: kPrimaryColor,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: const [
+                                          Icon(
+                                            FontAwesomeIcons.signOutAlt,
+                                            color: Colors.white,
+                                          ),
+                                          Text(
+                                            'Log Out',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w900),
+                                          )
+                                        ],
+                                      )),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              }
+
+              ///3 -> Loading
+              else {
+                return kLoading;
+              }
+            });
   }
 
   SizedBox buildBottomOverlay() {
@@ -311,27 +325,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> onUpdateClick(String image) async {
+    setState(() {
+      isUploading = false;
+    });
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
 
-      final String uid = FirebaseAuth.instance.currentUser.uid;
-      if (_imageFile != null) {
-        final String fileName = p.basename(_imageFile.path);
-        final Reference firebaseStorageRef =
-            FirebaseStorage.instance.ref().child('uploads/$uid/$fileName');
-        final uploadTask =
-            await firebaseStorageRef.putFile(File(_imageFile.path));
-        // ignore: parameter_assignments
-        image = await uploadTask.ref.getDownloadURL();
-      }
+      try {
+        final String uid = FirebaseAuth.instance.currentUser.uid;
+        if (_imageFile != null) {
+          final String fileName = p.basename(_imageFile.path);
+          final Reference firebaseStorageRef =
+              FirebaseStorage.instance.ref().child('uploads/$uid/$fileName');
+          final uploadTask =
+              await firebaseStorageRef.putFile(File(_imageFile.path));
+          // ignore: parameter_assignments
+          image = await uploadTask.ref.getDownloadURL();
+        }
 
-      await FirebaseFirestore.instance.collection('users').doc(uid).update({
-        'name': name,
-        'mobile': mobile,
-        'location': location,
-        'profileImg': image
-      });
+        await FirebaseFirestore.instance.collection('users').doc(uid).update({
+          'name': name,
+          'mobile': mobile,
+          'location': location,
+          'profileImg': image
+        });
+      } catch (e) {
+        Scaffold.of(context).showSnackBar(errorSnack(e.toString()));
+      }
     }
+    setState(() {
+      isUploading = false;
+    });
   }
 
   Future<Map<String, dynamic>> getProfile() async {

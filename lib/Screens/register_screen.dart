@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../shared_prefs.dart';
@@ -47,18 +48,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 200,
-                    margin: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
-                        color: kPrimaryColor.withOpacity(0.2),
-                        image: DecorationImage(
-                            image: AssetImage(isSeller
-                                ? 'assets/graphics/sellerImg.png'
-                                : 'assets/graphics/customerImg.png'))),
+                  FlipAnimation(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 200,
+                      margin: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                          color: isSeller
+                              ? kPrimaryColor.withOpacity(0.6)
+                              : kPrimaryColor.withOpacity(0.4),
+                          image: DecorationImage(
+                              image: AssetImage(isSeller
+                                  ? 'assets/graphics/SELLER.png'
+                                  : 'assets/graphics/BUYER.png'))),
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -229,7 +234,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         final String newRoute = isSeller
             ? SellerProfileSetupScreen.id
             : CustomerProfileSetupScreen.id;
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection('users')
             .doc(uid)
             .set({'user_type': newRoute});

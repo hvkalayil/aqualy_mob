@@ -130,7 +130,7 @@ class APIHandler {
   ///--------------------------------------------///
   //Get All products for shop user
   static Future<List<Map<String, dynamic>>> getAllProductsForShopUser() async {
-    final String url = kBaseUrl + kProduct;
+    final String url = '$kBaseUrl$kProduct?isAllowed=true';
     final response = await http.get(url);
 
     if (response.statusCode >= 200 && response.statusCode <= 400) {
@@ -628,6 +628,9 @@ class APIHandler {
       for (final item in data) {
         lIds.add(item['id'] as int);
       }
+      //Returning 0 if bo rating
+      if (lIds.isEmpty) return 0;
+
       final String reviewUrl = kBaseUrl + kRating;
       final reviewResponse = await http.get(reviewUrl);
       if (response.statusCode >= 200 && response.statusCode <= 400) {

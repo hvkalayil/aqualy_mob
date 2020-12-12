@@ -339,7 +339,7 @@ class _SellerProfileSetupScreenState extends State<SellerProfileSetupScreen> {
               await firebaseStorageRef.putFile(File(_imageFile.path));
           url = await uploadTask.ref.getDownloadURL();
         }
-        await FirebaseFirestore.instance.collection('users').doc(uid).set({
+        await FirebaseFirestore.instance.collection('users').doc(uid).update({
           'shopId': id,
           'name': name,
           'shopName': company,

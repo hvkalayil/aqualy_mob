@@ -298,7 +298,7 @@ class _CustomerProfileSetupScreenState
           url = await uploadTask.ref.getDownloadURL();
         }
 
-        await FirebaseFirestore.instance.collection('users').doc(uid).set({
+        await FirebaseFirestore.instance.collection('users').doc(uid).update({
           'name': name,
           'mobile': mobile,
           'location': location,

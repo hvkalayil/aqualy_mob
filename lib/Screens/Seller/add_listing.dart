@@ -403,9 +403,13 @@ class _AddListingScreenState extends State<AddListingScreen> {
       FutureBuilder<List<Map<String, dynamic>>>(
           future: APIHandler.getAllProductsForShopUser(),
           builder: (context, snapshot) {
+            // 1 -> Error
             if (snapshot.hasError) {
               return kError(snapshot.error.toString());
-            } else if (snapshot.hasData) {
+            }
+
+            // 2-> Success
+            else if (snapshot.hasData) {
               final List<Map<String, dynamic>> data = snapshot.data;
               if (data.isEmpty) {
                 return Center(
@@ -436,7 +440,10 @@ class _AddListingScreenState extends State<AddListingScreen> {
                   ),
                 );
               }
-            } else {
+            }
+
+            // 3 -> Loading
+            else {
               return kLoading;
             }
           });
