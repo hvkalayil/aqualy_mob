@@ -48,22 +48,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  FlipAnimation(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 200,
-                      margin: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20)),
-                          color: isSeller
-                              ? kPrimaryColor.withOpacity(0.6)
-                              : kPrimaryColor.withOpacity(0.4),
-                          image: DecorationImage(
-                              image: AssetImage(isSeller
-                                  ? 'assets/graphics/SELLER.png'
-                                  : 'assets/graphics/BUYER.png'))),
-                    ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 200,
+                    margin: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(20)),
+                        color: isSeller
+                            ? kPrimaryColor.withOpacity(0.6)
+                            : kPrimaryColor.withOpacity(0.4),
+                        image: DecorationImage(
+                            image: AssetImage(isSeller
+                                ? 'assets/graphics/SELLER.png'
+                                : 'assets/graphics/BUYER.png'))),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -180,7 +178,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             )),
                         keyboardType: TextInputType.visiblePassword,
                         textInputAction: TextInputAction.done,
-                        onSaved: (input) => pass = input,
                       ),
                       const SizedBox(height: 20),
 

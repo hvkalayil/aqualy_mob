@@ -189,7 +189,10 @@ class _FishInfoScreenState extends State<FishInfoScreen> {
   }
 
   double size = 0;
+  int actualSize = 0;
   Row createSizes(List<int> val) {
+    final bool isSingle = val.length == 1;
+    if (isSingle) actualSize = val.first;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -206,19 +209,27 @@ class _FishInfoScreenState extends State<FishInfoScreen> {
           children: [
             SizedBox(
               width: 100,
-              child: Slider(
-                activeColor: Colors.white,
-                inactiveColor: Colors.white,
-                value: size,
-                onChanged: (s) {
-                  setState(() {
-                    size = s;
-                  });
-                },
-                max: val.length.toDouble(),
-                divisions: val.length,
-                label: kListOfSizes[size.toInt()],
-              ),
+              child: isSingle
+                  ? Text(
+                      kListOfSizes[val.first],
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w900, color: Colors.white),
+                    )
+                  : Slider(
+                      activeColor: Colors.white,
+                      inactiveColor: Colors.white,
+                      value: size,
+                      onChanged: (s) {
+                        setState(() {
+                          size = s;
+                          actualSize = val[s.toInt()];
+                        });
+                      },
+                      max: val.length.toDouble() - 1,
+                      divisions: val.length,
+                      label: kListOfSizes[val[size.toInt()]],
+                    ),
             ),
             const Text(
               'Size',
@@ -231,7 +242,10 @@ class _FishInfoScreenState extends State<FishInfoScreen> {
   }
 
   double color = 0;
+  int actualColor = 0;
   Row createColors(List<int> val) {
+    final bool isSingle = val.length == 1;
+    if (isSingle) actualColor = val.first;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -248,22 +262,30 @@ class _FishInfoScreenState extends State<FishInfoScreen> {
           children: [
             SizedBox(
               width: 100,
-              child: Slider(
-                activeColor: kListOfColors[color.toInt()],
-                inactiveColor: Colors.white,
-                value: color,
-                onChanged: (s) {
-                  setState(() {
-                    color = s;
-                  });
-                },
-                max: val.length.toDouble(),
-                divisions: val.length,
-                label: kListofColorNames[color.toInt()],
-              ),
+              child: isSingle
+                  ? Text(
+                      kListofColorNames[val.first],
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w900, color: Colors.white),
+                    )
+                  : Slider(
+                      activeColor: kListOfColors[val[color.toInt()]],
+                      inactiveColor: Colors.white,
+                      value: color,
+                      onChanged: (s) {
+                        setState(() {
+                          color = s;
+                          actualColor = val[s.toInt()];
+                        });
+                      },
+                      max: val.length.toDouble() - 1,
+                      divisions: val.length,
+                      label: kListofColorNames[val[color.toInt()]],
+                    ),
             ),
             const Text(
-              'Colors',
+              'Color',
               style: TextStyle(color: Colors.white, fontSize: 14),
             ),
           ],
@@ -299,8 +321,8 @@ class _FishInfoScreenState extends State<FishInfoScreen> {
       await APIHandler.addTOCart(
           listingId: listingIds[index],
           shopId: shopIds[index],
-          color: color.toInt(),
-          size: size.toInt(),
+          color: actualColor,
+          size: actualSize,
           price: finalPrice,
           name: widget.data['name'] as String,
           image: widget.data['image'] as String);
