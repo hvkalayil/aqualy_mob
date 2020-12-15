@@ -1,3 +1,4 @@
+import 'package:aqua_ly/Api/api_handler.dart';
 import 'package:aqua_ly/Screens/Customer/main_screen.dart';
 import 'package:aqua_ly/Screens/Seller/seller_main_screen.dart';
 import 'package:aqua_ly/Screens/register_screen.dart';
@@ -287,6 +288,7 @@ class _LoginScreenState extends State<LoginScreen> {
               _type == 'Seller' ? SellerMainScreen.id : MainScreen.id;
           final String userName = _data['name'] as String;
 
+          await APIHandler.getIdOfUser(uid);
           await SharedPrefs.saveStr('name', userName);
           await SharedPrefs.saveStr('current_screen', newRoute);
           Navigator.of(context)

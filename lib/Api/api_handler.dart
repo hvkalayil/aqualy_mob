@@ -23,9 +23,20 @@ class APIHandler {
     }
   }
 
+  static Future<void> getIdOfUser(String uid) async {
+    final String url = '$kBaseUrl$kUsers?uid=$uid';
+    final response = await http.get(url);
+    if (response.statusCode >= 200 && response.statusCode <= 400) {
+      final data = json.decode(response.body);
+      await SharedPrefs.saveStr('uid', data[0]['id'].toString());
+    } else {
+      throw 'Error - Could not get id from database';
+    }
+  }
+
   //Get uid
   static Future<String> getUid(int id) async {
-    final String url = kBaseUrl + kUsers + id.toString();
+    final String url = '$kBaseUrl$kUsers$id/';
     final response = await http.get(url);
     if (response.statusCode >= 200 && response.statusCode <= 400) {
       final data = json.decode(response.body);

@@ -1,6 +1,7 @@
 import 'package:aqua_ly/Api/api_handler.dart';
 import 'package:aqua_ly/constants.dart';
 import 'package:aqua_ly/theme.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -329,6 +330,7 @@ class _FishInfoScreenState extends State<FishInfoScreen> {
       _key.currentState
           .showSnackBar(const SnackBar(content: Text('Item added to cart')));
     } catch (e) {
+      print(e.toString());
       _key.currentState.showSnackBar(errorSnack(e.toString()));
     }
     setState(() {
