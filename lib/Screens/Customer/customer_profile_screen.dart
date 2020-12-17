@@ -69,16 +69,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       shape: BoxShape.circle,
                                     ),
                                     child: _imageFile == null
-                                        ? Image.network(
-                                            image,
-                                            fit: BoxFit.fitWidth,
-                                            errorBuilder: (context, wid, s) =>
-                                                Image.asset(
-                                              kDefProfile,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          )
-                                        : Image.file(File(_imageFile.path))),
+                                        ? image == 'default'
+                                            ? Image.asset(
+                                                kDefProfile,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.network(
+                                                image,
+                                                fit: BoxFit.fitWidth,
+                                                errorBuilder:
+                                                    (context, wid, s) =>
+                                                        Image.asset(
+                                                  kDefProfile,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )
+                                        : Image.file(
+                                            File(_imageFile.path),
+                                            errorBuilder:
+                                                (context, error, widget) {
+                                              Scaffold.of(context).showSnackBar(
+                                                  errorSnack(
+                                                      'Could not find the image'));
+                                              return Image.asset(kDefProfile);
+                                            },
+                                          )),
                               ),
                             ),
 
@@ -300,10 +315,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onPressed: () async {
                     final pickedFile =
                         await _picker.getImage(source: ImageSource.gallery);
+                    Navigator.pop(context);
                     setState(() {
                       _imageFile = pickedFile;
                     });
-                    Navigator.pop(context);
                   },
                   color: kPrimaryColor,
                   shape: const RoundedRectangleBorder(

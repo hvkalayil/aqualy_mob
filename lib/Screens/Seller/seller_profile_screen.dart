@@ -68,15 +68,21 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
                                       shape: BoxShape.circle,
                                     ),
                                     child: _imageFile == null
-                                        ? Image.network(
-                                            image,
-                                            fit: BoxFit.fitWidth,
-                                            errorBuilder: (context, wid, s) =>
-                                                Image.asset(
-                                              kDefProfile,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          )
+                                        ? image == 'default'
+                                            ? Image.asset(
+                                                kDefProfile,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.network(
+                                                image,
+                                                fit: BoxFit.fitWidth,
+                                                errorBuilder:
+                                                    (context, wid, s) =>
+                                                        Image.asset(
+                                                  kDefProfile,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )
                                         : Image.file(File(_imageFile.path))),
                               ),
                             ),
