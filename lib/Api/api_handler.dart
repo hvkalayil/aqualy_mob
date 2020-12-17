@@ -613,7 +613,7 @@ class APIHandler {
       List<Map<String, dynamic>> result = [];
       int total = 0;
       for (final item in data) {
-        final int stars = item['stars'] as int;
+        final int stars = (item['stars'] as double).toInt();
         total += stars;
         result.add({
           'name': item['name'],

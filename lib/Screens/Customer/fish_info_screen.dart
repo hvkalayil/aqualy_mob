@@ -52,105 +52,115 @@ class _FishInfoScreenState extends State<FishInfoScreen> {
                   colors = listData['colors'] as List<List<int>>;
                   shopIds = listData['shop_id'] as List<int>;
                   listingIds = listData['id'] as List<int>;
-                  finalPrice = (widget.data['price'] as int) -
-                      ((widget.data['price'] as int) * discounts[index]) ~/ 100;
-                  if (adding) {
-                    return kLoading;
-                  } else {
-                    return SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //Heading
-                          const SizedBox(height: 20),
-                          Center(
-                            child: Container(
-                              width: 300,
-                              padding: FishInfoScreen.kSmallPadding,
-                              decoration: const BoxDecoration(
-                                  color: kPrimaryColor,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    widget.data['name'] as String,
-                                    style: const TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.w900,
-                                        color: Colors.white),
-                                  ),
-                                  Text("₹$finalPrice",
+
+                  //Empty
+                  if (listingIds.isEmpty) {
+                    return kError('Coming Soon');
+                  }
+
+                  //Some listings
+                  else {
+                    finalPrice = (widget.data['price'] as int) -
+                        ((widget.data['price'] as int) * discounts[index]) ~/
+                            100;
+                    if (adding) {
+                      return kLoading;
+                    } else {
+                      return SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //Heading
+                            const SizedBox(height: 20),
+                            Center(
+                              child: Container(
+                                width: 300,
+                                padding: FishInfoScreen.kSmallPadding,
+                                decoration: const BoxDecoration(
+                                    color: kPrimaryColor,
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      widget.data['name'] as String,
                                       style: const TextStyle(
-                                          fontSize: 24,
+                                          fontSize: 28,
                                           fontWeight: FontWeight.w900,
-                                          color: Colors.white))
+                                          color: Colors.white),
+                                    ),
+                                    Text("₹$finalPrice",
+                                        style: const TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w900,
+                                            color: Colors.white))
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+
+                            //Product
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.5,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: kPrimaryColor.withOpacity(0.5),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            "Specifications",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 20,
+                                                color: Colors.white),
+                                          ),
+                                          Column(
+                                            children: [
+                                              createSizes(sizes[index]),
+                                              createColors(colors[index]),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.5,
+                                        decoration: const BoxDecoration(
+                                          color: kPrimaryColor,
+                                        ),
+                                        child: Image.network(
+                                          widget.data['image'] as String,
+                                          errorBuilder:
+                                              (context, widget, error) =>
+                                                  Image.asset(kDefImg),
+                                        )),
+                                  )
                                 ],
                               ),
                             ),
-                          ),
-                          const SizedBox(height: 20),
+                            const SizedBox(height: 20),
 
-                          //Product
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.5,
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: kPrimaryColor.withOpacity(0.5),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Text(
-                                          "Specifications",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 20,
-                                              color: Colors.white),
-                                        ),
-                                        Column(
-                                          children: [
-                                            createSizes(sizes[index]),
-                                            createColors(colors[index]),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.5,
-                                      decoration: const BoxDecoration(
-                                        color: kPrimaryColor,
-                                      ),
-                                      child: Image.network(
-                                        widget.data['image'] as String,
-                                        errorBuilder:
-                                            (context, widget, error) =>
-                                                Image.asset(kDefImg),
-                                      )),
-                                )
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 20),
+                            //Variants
+                            showVariants(),
 
-                          //Variants
-                          showVariants(),
-
-                          //Reviews
-                          showReviews()
-                        ],
-                      ),
-                    );
+                            //Reviews
+                            showReviews()
+                          ],
+                        ),
+                      );
+                    }
                   }
                 }
 
